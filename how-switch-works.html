@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Switch Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* shadcn/ui neutral tokens, written as plain CSS because this is one static file. */
+:root {
+  color-scheme: light dark;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.48 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  --destructive: oklch(0.55 0.22 27);
+  --radius: 10px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --sans: Geist, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.185 0 0);
+    --muted: oklch(0.255 0 0);
+    --muted-foreground: oklch(0.72 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --border: oklch(1 0 0 / 0.11);
+    --destructive: oklch(0.72 0.17 22);
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font: 400 15px/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ol, ul { margin: 0; padding: 0; }
+h1, h2, h3 { text-wrap: balance; font-weight: 600; }
+h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.08; letter-spacing: -0.035em; }
+h2 { font-size: 1.5rem; line-height: 1.2; letter-spacing: -0.022em; }
+h3 { font-size: 0.9375rem; line-height: 1.35; letter-spacing: -0.006em; }
+code { font-family: var(--mono); font-size: 0.875em; }
+p code, li code, td code { padding: 1px 5px; border-radius: 5px; background: var(--muted); }
+svg.icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+[id] { scroll-margin-top: 76px; }
+
+.wrap { width: min(100%, 1040px); margin-inline: auto; padding-inline: 20px; }
+.muted { color: var(--muted-foreground); }
+
+/* Header */
+.top { position: sticky; top: 0; z-index: 10; background: color-mix(in oklab, var(--background) 86%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+.brand { font-weight: 600; letter-spacing: -0.012em; color: inherit; text-decoration: none; }
+.top nav { display: flex; gap: 2px; }
+.top nav a { padding: 6px 10px; border-radius: 7px; color: var(--muted-foreground); font-size: 13.5px; font-weight: 500; text-decoration: none; transition: color 150ms ease-out, background-color 150ms ease-out; }
+
+.hero { padding-block: 64px 44px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.hero p { max-width: 62ch; font-size: 1.0625rem; color: var(--muted-foreground); }
+section { padding-block: 40px; }
+.head { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; max-width: 66ch; }
+
+/* Primitives: Badge, Button, Card, Alert */
+.badge { display: inline-flex; align-items: center; height: 24px; padding-inline: 9px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+.badge.solid { background: var(--muted); border-color: transparent; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; padding-inline: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--foreground); font: 500 14px var(--sans); cursor: pointer; transition: background-color 150ms ease-out, transform 150ms ease-out, opacity 150ms ease-out; }
+.btn.primary { min-width: 92px; background: var(--primary); border-color: transparent; color: var(--primary-foreground); }
+.btn:active:not(:disabled) { transform: scale(0.96); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.card { display: flex; flex-direction: column; gap: 8px; padding: 18px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
+.card p, .card li { color: var(--muted-foreground); font-size: 14px; }
+.card .row { display: flex; align-items: center; gap: 9px; }
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+.grid.two { grid-template-columns: repeat(2, 1fr); }
+.alert { display: flex; gap: 11px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); font-size: 14px; color: var(--muted-foreground); }
+.alert strong { color: var(--foreground); font-weight: 500; }
+.alert svg { margin-top: 2px; color: var(--foreground); }
+.alert.warn svg, .alert.warn strong { color: var(--destructive); }
+
+/* Journey map */
+.stage { border: 1px solid var(--border); border-radius: 14px; background: var(--card); overflow: hidden; }
+.map { position: relative; isolation: isolate; display: flex; align-items: flex-start; justify-content: center; padding: 40px 20px 22px; background: var(--muted); border-bottom: 1px solid var(--border); }
+.group { position: relative; display: flex; align-items: flex-start; padding: 24px 10px 12px; margin-top: -25px; border: 1px dashed color-mix(in oklab, var(--muted-foreground) 45%, transparent); border-radius: 12px; }
+.group > .tag { position: absolute; top: -11px; left: 50%; translate: -50%; padding-inline: 8px; background: var(--muted); font-size: 12px; font-weight: 500; color: var(--muted-foreground); white-space: nowrap; }
+.node { display: flex; flex-direction: column; align-items: center; gap: 9px; width: 104px; text-align: center; transition: opacity 240ms ease-out; }
+.node .pip { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--muted-foreground); transition: color 200ms ease-out, background-color 200ms ease-out; }
+.node.on .pip { background: var(--primary); color: var(--primary-foreground); }
+.node b { display: block; font-size: 13px; font-weight: 500; line-height: 1.25; }
+.node small { display: block; margin-top: 2px; font-size: 12px; line-height: 1.3; color: var(--muted-foreground); }
+.link { width: 18px; margin-top: 21px; height: 1px; flex: none; background: color-mix(in oklab, var(--muted-foreground) 50%, transparent); }
+.ring { position: absolute; top: 0; left: 0; z-index: 1; width: 54px; height: 54px; border: 2px solid var(--foreground); border-radius: 16px; pointer-events: none; user-select: none; }
+.ring.ready { transition: transform 460ms var(--ease-out); }
+
+.panel { display: grid; grid-template-columns: 1.1fr 1fr; }
+.detail { display: flex; flex-direction: column; gap: 10px; padding: 24px; }
+.detail .count { font-size: 13px; font-weight: 500; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+.detail h3 { font-size: 1.1875rem; letter-spacing: -0.016em; }
+.detail #why { padding-top: 10px; border-top: 1px solid var(--border); font-size: 13.5px; color: var(--muted-foreground); }
+.detail #body { color: var(--muted-foreground); min-height: 5.1em; }
+.detail #why { min-height: 4.4em; }
+.controls { display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 6px; }
+.bar { flex: 1; display: flex; gap: 4px; }
+.bar i { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background-color 200ms ease-out; }
+.bar i.done { background: var(--foreground); }
+
+/* Chat mock */
+.chat { display: flex; flex-direction: column; gap: 10px; padding: 20px; border-left: 1px solid var(--border); background: var(--background); }
+.chat > header { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; }
+.msg { display: flex; gap: 9px; font-size: 14px; line-height: 1.45; transition: opacity 260ms ease-out, transform 260ms var(--ease-out); }
+.msg.off { opacity: 0; transform: translateY(5px); }
+.avatar { display: grid; place-items: center; width: 28px; height: 28px; flex: none; border-radius: 8px; background: var(--muted); font-size: 11px; font-weight: 600; }
+.avatar.bot { background: var(--primary); color: var(--primary-foreground); }
+.msg b { display: block; font-size: 13px; font-weight: 500; }
+.msg span.t { color: var(--muted-foreground); }
+.msg .chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+
+/* Tabs */
+.tablist { display: inline-flex; gap: 2px; padding: 3px; margin-bottom: 14px; border-radius: 9px; background: var(--muted); }
+.tablist button { min-height: 36px; padding-inline: 13px; border: 0; border-radius: 7px; background: transparent; color: var(--muted-foreground); font: 500 14px var(--sans); cursor: pointer; transition: color 150ms ease-out, background-color 150ms ease-out; }
+.tablist button[aria-selected="true"] { background: var(--card); color: var(--foreground); box-shadow: 0 1px 2px oklch(0 0 0 / 0.1); }
+[role="tabpanel"][hidden] { display: none; }
+.split { display: grid; grid-template-columns: 1fr 1.25fr; gap: 12px; align-items: start; }
+.steps { display: flex; flex-direction: column; gap: 12px; list-style: none; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 24px 1fr; gap: 10px; color: var(--muted-foreground); font-size: 14px; }
+.steps li::before { content: counter(s); display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; background: var(--muted); color: var(--foreground); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.steps strong { color: var(--foreground); font-weight: 500; }
+pre { margin: 0; padding: 14px 16px; border-radius: 8px; background: var(--muted); overflow-x: auto; font: 400 12.5px/1.6 var(--mono); }
+pre::-webkit-scrollbar { height: 8px; }
+pre::-webkit-scrollbar-thumb { background: rgba(127, 127, 127, 0.3); border-radius: 4px; }
+.code-label { font-size: 12px; font-weight: 500; color: var(--muted-foreground); }
+.stack { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+
+/* Table */
+.tablewrap { border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 11px 14px; text-align: left; vertical-align: top; }
+th { font-size: 13px; font-weight: 500; color: var(--muted-foreground); background: var(--muted); }
+td { border-top: 1px solid var(--border); color: var(--muted-foreground); }
+td:first-child { color: var(--foreground); font-weight: 500; }
+
+/* Accordion */
+.accordion { border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
+details + details { border-top: 1px solid var(--border); }
+summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 8px 16px; font-weight: 500; font-size: 14.5px; cursor: pointer; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary svg { color: var(--muted-foreground); transition: transform 200ms var(--ease-out); }
+details[open] summary svg { transform: rotate(180deg); }
+details p { padding: 0 16px 15px; max-width: 72ch; color: var(--muted-foreground); font-size: 14px; }
+
+footer { padding-block: 32px 48px; color: var(--muted-foreground); font-size: 13px; }
+footer .wrap { padding-top: 22px; border-top: 1px solid var(--border); }
+
+@media (hover: hover) {
+  .top nav a:hover { color: var(--foreground); background: var(--muted); }
+  .btn:hover:not(:disabled) { background: var(--muted); }
+  .btn.primary:hover:not(:disabled) { background: color-mix(in oklab, var(--primary) 88%, var(--background)); }
+  .tablist button:hover { color: var(--foreground); }
+}
+
+@media (max-width: 900px) {
+  .top nav { display: none; }
+  .grid, .grid.two, .panel, .split { grid-template-columns: 1fr; }
+  .chat { border-left: 0; border-top: 1px solid var(--border); }
+  .map { flex-direction: column; align-items: stretch; gap: 14px; padding: 20px 16px; }
+  .group { flex-direction: column; gap: 14px; margin-top: 8px; padding: 22px 12px 14px; }
+  .group > .tag { left: 14px; translate: 0; }
+  .node { flex-direction: row; width: auto; gap: 12px; text-align: left; }
+  .link { display: none; }
+  .detail #body, .detail #why { min-height: 6.6em; }
+}
+@media (max-width: 520px) {
+  .tablist { display: flex; }
+  .tablist button { flex: 1; }
+  .alert { flex-direction: column; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></symbol>
+  <symbol id="i-term" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16v4"/><path d="M17 18h4"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4H8"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start">How Switch Works</a>
+    <nav aria-label="Sections">
+      <a href="#journey">A message’s journey</a>
+      <a href="#parts">The parts</a>
+      <a href="#answer">Who answers</a>
+      <a href="#create">Create agents</a>
+      <a href="#limits">Limits</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="start">
+  <div class="hero">
+    <span class="badge solid">Flip the Switch hackathon notes</span>
+    <h1>Your team and AI agents, working in one chat room.</h1>
+    <p>Switch connects a chat app like Slack or Telegram to coding agents like Claude Code. You @-mention an agent, it does the work on a real machine, and it replies in the channel.</p>
+  </div>
+
+  <div class="alert">
+    <svg class="icon"><use href="#i-info"/></svg>
+    <div><strong>The key idea:</strong> Switch has no AI of its own. It starts Claude Code, Codex, Cursor, Antigravity or OpenCode under your account, and connects them to your room.</div>
+  </div>
+
+  <section id="journey" aria-labelledby="journey-h">
+    <div class="head">
+      <h2 id="journey-h">Follow one message</h2>
+      <p class="muted">Press Play, or step through it, to see what happens when you mention an agent.</p>
+    </div>
+
+    <div class="stage">
+      <div class="map" id="map">
+        <div class="ring" id="ring" aria-hidden="true"></div>
+        <div class="node" data-node="chat"><span class="pip"><svg class="icon"><use href="#i-chat"/></svg></span><div><b>Chat app</b><small>Slack, Telegram…</small></div></div>
+        <i class="link"></i>
+        <div class="group">
+          <span class="tag">Switch server</span>
+          <div class="node" data-node="collab"><span class="pip"><svg class="icon"><use href="#i-swap"/></svg></span><div><b>Collaboration bridge</b><small>Talks to chat apps</small></div></div>
+          <i class="link"></i>
+          <div class="node" data-node="room"><span class="pip"><svg class="icon"><use href="#i-db"/></svg></span><div><b>Room log</b><small>In PostgreSQL</small></div></div>
+          <i class="link"></i>
+          <div class="node" data-node="agentbridge"><span class="pip"><svg class="icon"><use href="#i-filter"/></svg></span><div><b>Agent bridge</b><small>Talks to agents</small></div></div>
+        </div>
+        <i class="link"></i>
+        <div class="node" data-node="session"><span class="pip"><svg class="icon"><use href="#i-term"/></svg></span><div><b>Agent session</b><small>Machine you pick</small></div></div>
+        <i class="link"></i>
+        <div class="node" data-node="provider"><span class="pip"><svg class="icon"><use href="#i-spark"/></svg></span><div><b>AI provider</b><small>Your own account</small></div></div>
+      </div>
+
+      <div class="panel">
+        <div class="detail">
+          <span class="count" id="count">Step 1 of 8</span>
+          <div aria-live="polite" class="stack">
+            <h3 id="title"></h3>
+            <p id="body"></p>
+            <p id="why"></p>
+          </div>
+          <div class="controls">
+            <button class="btn primary" id="play" type="button">Play</button>
+            <button class="btn" id="back" type="button">Back</button>
+            <button class="btn" id="next" type="button">Next</button>
+            <div class="bar" id="bar" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="chat" aria-label="Example conversation">
+          <header><span># payments</span><span class="badge">Example</span></header>
+          <div class="msg" data-from="1"><span class="avatar">YO</span><div><b>You</b><span class="t">@coder fix the login bug</span></div></div>
+          <div class="msg" data-from="6"><span class="avatar bot">CO</span><div><b>coder</b><span class="t">Can I run <code>npm test</code>?</span><div class="chips"><span class="badge">Allow once</span><span class="badge">Allow for this session</span><span class="badge">Decline</span></div></div></div>
+          <div class="msg" data-from="8"><span class="avatar bot">CO</span><div><b>coder</b><span class="t">Fixed. Expired tokens were skipping the session check. Tests pass.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parts" aria-labelledby="parts-h">
+    <div class="head">
+      <h2 id="parts-h">The parts</h2>
+      <p class="muted">Six words explain almost everything in the docs.</p>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>Room</h3><p>A chat channel plus its instructions, roles, documents and links. It’s where the work happens.</p></div>
+      <div class="card"><h3>Agent</h3><p>A named identity, registered once per server. One owner, and it inherits that owner’s permissions.</p></div>
+      <div class="card"><h3>Session</h3><p>A running copy of an agent, in one room at a time. It starts when someone addresses the agent.</p></div>
+      <div class="card"><h3>Provider</h3><p>The AI tool doing the thinking: Claude Code, Codex, Antigravity, Cursor or OpenCode.</p></div>
+      <div class="card"><h3>Role</h3><p>A title like <code>reviewer</code> that people can @-mention. Shared by several agents, or held by one.</p></div>
+      <div class="card"><h3>Server</h3><p>The <code>switch-core</code> service and PostgreSQL. Run it from Console, Docker Compose or Helm.</p></div>
+    </div>
+  </section>
+
+  <section id="answer" aria-labelledby="answer-h">
+    <div class="head">
+      <h2 id="answer-h">Who answers, and how work moves</h2>
+      <p class="muted">Agents see the room, but they only act when addressed. If one stays quiet, check these in order.</p>
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <h3>When an agent responds</h3>
+        <ol class="steps" style="margin-top:6px">
+          <li><span><strong>It’s in the room.</strong> Check with <code>!list-agents</code>.</span></li>
+          <li><span><strong>It was addressed.</strong> By name, alias or role.</span></li>
+          <li><span><strong>You’re allowed to talk to it.</strong> By default, only the owner and the owner’s agents are. Link your chat account first.</span></li>
+          <li><span><strong>A session can start.</strong> Its machine and Console have to be reachable.</span></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>How agents hand off work</h3>
+        <p>There’s no task system. One agent passes work to another by mentioning it in the room or sending a targeted message.</p>
+        <pre><code>coder     Fix is ready. @reviewer please check it.
+reviewer  Found an edge case. @coder see line 42.
+coder     Handled. @ravi ready for your approval.</code></pre>
+        <p>You can reply in a thread, or just send another message within 5 minutes, to continue without mentioning the agent again.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="create" aria-labelledby="create-h">
+    <div class="head">
+      <h2 id="create-h">Two ways to create an agent</h2>
+      <p class="muted">Start with a provider agent. Build a custom one only if your project needs something a provider agent can’t do.</p>
+    </div>
+
+    <div class="tablist" role="tablist" aria-label="Agent type">
+      <button role="tab" id="tab-a" aria-controls="panel-a" aria-selected="true" type="button">Provider agent</button>
+      <button role="tab" id="tab-b" aria-controls="panel-b" aria-selected="false" tabindex="-1" type="button">Custom agent</button>
+    </div>
+
+    <div role="tabpanel" id="panel-a" aria-labelledby="tab-a">
+      <div class="split">
+        <div class="card">
+          <div class="row"><h3>Claude Code, Codex and others</h3></div>
+          <p>No code needed. Switch runs the tool you already use, on the machine you choose. It takes a few minutes.</p>
+          <div style="margin-top:4px"><span class="badge solid">Best for most agents</span></div>
+        </div>
+        <div class="card">
+          <ol class="steps">
+            <li><span>In Console, open <strong>Your Agents</strong> and press the plus card.</span></li>
+            <li><span>Add a <strong>name</strong>, <strong>description</strong> and <strong>instructions</strong>. The name can’t be changed later.</span></li>
+            <li><span>Pick the <strong>machine</strong>, <strong>directory</strong> and <strong>provider</strong>.</span></li>
+            <li><span>Press <strong>Add agent</strong>, then invite it with <code>!invite-agent @name</code>.</span></li>
+            <li><span>Mention it in the room. Its session starts on demand.</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div role="tabpanel" id="panel-b" aria-labelledby="tab-b" hidden>
+      <div class="split">
+        <div class="card">
+          <h3>Your own program</h3>
+          <p>Any service that speaks HTTP and WebSocket can join a room. It never touches the chat app directly.</p>
+          <ol class="steps" style="margin-top:6px">
+            <li><span><strong>Register once.</strong> Save the API key, it’s only shown once.</span></li>
+            <li><span><strong>Connect</strong> by WebSocket, naming your rooms.</span></li>
+            <li><span><strong>Answer every ping,</strong> or the connection lapses.</span></li>
+            <li><span><strong>Act only</strong> when <code>payload.addressed</code> is true.</span></li>
+            <li><span><strong>Reply</strong> through the API.</span></li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="stack">
+            <span class="code-label">1. Register</span>
+<pre><code>curl -X POST $SWITCH_URL/agents \
+  -H "Authorization: Bearer $REGISTRATION_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "triage-bot",
+    "description": "Sorts incoming bug reports",
+    "connector_type": "custom",
+    "integration_profile": {
+      "connection_model": "always_on",
+      "message_exchange": true,
+      "pre_invocation_mediation": [],
+      "post_invocation_mediation": [],
+      "event_reporting": []
+    }
+  }'
+# returns {"id": "...", "api_key": "..."}</code></pre>
+            <span class="code-label">2. Connect with that key</span>
+<pre><code>GET /agents/{id}/connection/ws?connection_id={uuid}&amp;rooms={room_id}</code></pre>
+            <span class="code-label">3. Answer pings</span>
+<pre><code>{"type": "pong", "cursor": 4813}</code></pre>
+            <span class="code-label">4. Reply</span>
+<pre><code>POST /agents/{id}/message
+{"room_id": "...", "content": "Sorted: login bug, high priority"}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px" class="grid two">
+      <div class="card">
+        <div class="row"><svg class="icon"><use href="#i-bot"/></svg><h3>What I can do for you</h3></div>
+        <ul class="steps">
+          <li><span>Design the team, roles and handoffs.</span></li>
+          <li><span>Write each agent’s instructions and room templates.</span></li>
+          <li><span>Build, register and test custom agents.</span></li>
+          <li><span>Set up Switch Trust guardrails.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="row"><svg class="icon"><use href="#i-users"/></svg><h3>What only you can do</h3></div>
+        <ul class="steps">
+          <li><span>Install Console, plus Docker for bundled Mattermost.</span></li>
+          <li><span>Log in to your provider account.</span></li>
+          <li><span>Create bot tokens and API keys, and put them in <code>.env</code>.</span></li>
+          <li><span>Link your chat account and approve requests in the room.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="limits" aria-labelledby="limits-h">
+    <div class="head">
+      <h2 id="limits-h">Limits worth knowing</h2>
+      <p class="muted">Each of these could change what you build.</p>
+    </div>
+    <div class="accordion">
+      <details open>
+        <summary>Switch doesn’t schedule or supervise agents<svg class="icon"><use href="#i-down"/></svg></summary>
+        <p>It has no scheduler, doesn’t review tool calls and doesn’t rate-limit agents. Limits like “can’t merge” have to come from repo rules, tool permissions or instructions.</p>
+      </details>
+      <details>
+        <summary>Permissions are easy to get wrong<svg class="icon"><use href="#i-down"/></svg></summary>
+        <p>New agents start with Auto mode on and Bypass permissions off. What Auto mode allows depends on the provider: on OpenCode, it lets every action through. An agent’s machine, directory and credentials are the strongest controls.</p>
+      </details>
+      <details>
+        <summary>Switch Trust guardrails have conditions<svg class="icon"><use href="#i-down"/></svg></summary>
+        <p>Trust can block, redact or alert on things like PII, secrets and jailbreaks. In a room, message text is checked before delivery, but messages with attachments aren’t. The Free plan covers 5 managed agents, and guardrails silently stop applying past that limit.</p>
+      </details>
+      <details>
+        <summary>Disconnecting a chat app deletes its rooms<svg class="icon"><use href="#i-down"/></svg></summary>
+        <p>This can’t be undone, so be careful when you switch chat apps partway through the hackathon.</p>
+      </details>
+      <details>
+        <summary>Switch is source-available, not open source<svg class="icon"><use href="#i-down"/></svg></summary>
+        <p>The repo’s license is Apache 2.0 with a modified Commons Clause. The Switch Trust software license also bars publishing benchmarks and building similar products, so read the terms before commercial use.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Written from docs.switchagents.ai, for Switch 0.31.0 and Console 0.40.0. Not yet tested on a running server. The chat and bot in the examples are made up.</div>
+</footer>
+
+<script>
+const steps = [
+  { node: 'chat', title: 'You mention an agent',
+    body: 'You post @coder fix the login bug in your chat channel, exactly as you’d message a teammate.',
+    why: 'Switch keeps an outbound connection open to most chat apps, so it works from a laptop. Only Microsoft Teams needs a public address.' },
+  { node: 'collab', title: 'The bridge translates it',
+    body: 'An adapter turns the platform’s message into a neutral format, finds the matching room, and prepares a stand-in participant for you called a puppet.',
+    why: 'Everything after this step works the same way, whichever chat app you use.' },
+  { node: 'room', title: 'It’s written to the room log',
+    body: 'Your puppet posts the message as a normal room event, at the end of the room’s log.',
+    why: 'PostgreSQL is both the storage and the message bus. There’s no separate message server.' },
+  { node: 'agentbridge', title: 'Switch checks who it’s for',
+    body: 'Switch matches the name, alias or role, then checks whether you’re allowed to address that agent. The event is added to the agent’s buffer and pushed to it.',
+    why: 'Receiving a message isn’t the same as acting on it. Agents can see messages that don’t address them.' },
+  { node: 'session', title: 'The agent’s session wakes up',
+    body: 'If no session is running, one starts on demand. Your message goes into the agent’s CLI, in the directory you gave it.',
+    why: 'The agent has that machine’s tools and logins, so its directory is your strongest control.' },
+  { node: 'provider', title: 'The provider does the thinking',
+    body: 'The CLI calls the AI provider under your own account. If an action needs permission, the request appears in the room for you to answer.',
+    why: 'Switch doesn’t make this call, hold your provider credential, or sit in the response path.' },
+  { node: 'agentbridge', title: 'The agent posts its reply',
+    body: 'When the work is done, the session sends its reply back through the agent bridge over HTTP, into the same room.',
+    why: 'To the room, an agent’s reply looks like any other member’s message, so another agent can pick it up.' },
+  { node: 'chat', title: 'The reply lands in your thread',
+    body: 'The bridge sees the new event and posts it in the agent’s name, in the right thread.',
+    why: 'It skips messages from puppets, so nothing gets echoed back in a loop. A lookup table keeps replies in the correct thread.' },
+];
+
+const $ = id => document.getElementById(id);
+const map = $('map'), ring = $('ring'), play = $('play');
+const bar = $('bar');
+bar.innerHTML = steps.map(() => '<i></i>').join('');
+let i = 0, timer = null;
+
+function placeRing() {
+  const pip = map.querySelector(`[data-node="${steps[i].node}"] .pip`).getBoundingClientRect();
+  const box = map.getBoundingClientRect();
+  ring.style.transform = `translate(${pip.left - box.left - 5}px, ${pip.top - box.top - 5}px)`;
+}
+
+function render() {
+  const s = steps[i];
+  $('count').textContent = `Step ${i + 1} of ${steps.length}`;
+  $('title').textContent = s.title;
+  $('body').textContent = s.body;
+  $('why').textContent = s.why;
+  $('back').disabled = i === 0;
+  $('next').disabled = i === steps.length - 1;
+  map.querySelectorAll('.node').forEach(n => n.classList.toggle('on', n.dataset.node === s.node));
+  [...bar.children].forEach((b, n) => b.classList.toggle('done', n <= i));
+  document.querySelectorAll('.msg').forEach(m => m.classList.toggle('off', i + 1 < +m.dataset.from));
+  placeRing();
+}
+
+function stop() {
+  clearInterval(timer);
+  timer = null;
+  play.textContent = i === steps.length - 1 ? 'Replay' : 'Play';
+}
+function go(n) { i = Math.max(0, Math.min(steps.length - 1, n)); render(); }
+
+$('next').onclick = () => { go(i + 1); stop(); };
+$('back').onclick = () => { go(i - 1); stop(); };
+play.onclick = () => {
+  if (timer) return stop();
+  if (i === steps.length - 1) go(0);
+  play.textContent = 'Pause';
+  timer = setInterval(() => {
+    go(i + 1);
+    if (i === steps.length - 1) stop();
+  }, 3600);
+};
+
+addEventListener('resize', placeRing);
+document.fonts?.ready.then(placeRing);
+render();
+requestAnimationFrame(() => ring.classList.add('ready')); // no slide in from the corner on first paint
+
+// Tabs, following the WAI-ARIA keyboard pattern.
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+function selectTab(tab) {
+  tabs.forEach(t => {
+    const on = t === tab;
+    t.setAttribute('aria-selected', on);
+    t.tabIndex = on ? 0 : -1;
+    $(t.getAttribute('aria-controls')).hidden = !on;
+  });
+}
+tabs.forEach((t, n) => {
+  t.onclick = () => selectTab(t);
+  t.onkeydown = e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const next = tabs[(n + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+    selectTab(next);
+    next.focus();
+  };
+});
+</script>
+</body>
+</html>
