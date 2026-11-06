@@ -16,12 +16,12 @@ params:
   provider:
     type: provider
     description: Which coding agent backs all four. The first one installed is chosen.
-    default: [claude, codex, opencode]
+    default: [claude]
     input: advanced
-  location:
-    type: location
-    description: The machine all four run on.
-    default: local
+  machine:
+    type: machine
+    description: The machine all four run on. The first online one is chosen.
+    default: [$first]
     input: advanced
   bridge:
     type: bridge
@@ -38,7 +38,7 @@ agents:
     auto_mode: true
     auto_approve: false
     provider: "{provider}"
-    location: "{location}"
+    machine: "{machine}"
     directory: "{directory}"
     instructions: |
       You are Pulse, the listener on AuraPulse's marketing desk. Your one job:
@@ -73,7 +73,7 @@ agents:
     auto_mode: true
     auto_approve: false
     provider: "{provider}"
-    location: "{location}"
+    machine: "{machine}"
     directory: "{directory}"
     instructions: |
       You are Sieve, the triager on AuraPulse's marketing desk. Pulse hands you
@@ -113,7 +113,7 @@ agents:
     auto_mode: true
     auto_approve: false
     provider: "{provider}"
-    location: "{location}"
+    machine: "{machine}"
     directory: "{directory}"
     instructions: |
       You are Quill, the drafter on AuraPulse's marketing desk. Sieve hands you
@@ -149,7 +149,7 @@ agents:
     auto_mode: true
     auto_approve: false
     provider: "{provider}"
-    location: "{location}"
+    machine: "{machine}"
     directory: "{directory}"
     instructions: |
       You are Rival, the competitor watcher on AuraPulse's marketing desk.
