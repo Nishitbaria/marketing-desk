@@ -36,8 +36,9 @@ params:
     input: advanced
   bridge:
     type: bridge
-    description: Where the room is mirrored.
+    description: Where the room is mirrored. Leave empty for a Switch-only room in the Console.
     default: [Slack, Discord, Mattermost, $first]
+    required: false
     input: advanced
 
 agents:
