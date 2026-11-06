@@ -17,3 +17,6 @@ __pycache__/
 
 # Logs
 *.log
+
+# Agent runtime state (seen log, ledger fallbacks)
+ledger/
