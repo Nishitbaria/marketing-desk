@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One-Person Studio Plan</title>
+<style>
+:root{--bg:#F4EFE6;--fg:#1B1F3B;--mute:#5d6280;--card:#fff;--line:#e2dccf;--done:#2f8f5b;--now:#FF6B4A;--next:#8A8FA8;--block:#c0392b}
+@media (prefers-color-scheme:dark){:root{--bg:#12152b;--fg:#F4EFE6;--mute:#a3a8c3;--card:#1B1F3B;--line:#2c3157}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 Inter,system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:40px 16px 80px}
+h1{font:700 2.2rem/1.1 "Space Grotesk",system-ui,sans-serif;letter-spacing:-.02em;margin:0 0 6px}
+.sub{color:var(--mute);margin:0 0 28px}
+.deadline{display:inline-block;background:var(--now);color:#fff;border-radius:6px;padding:4px 10px;font-weight:600;font-size:.9rem}
+.phase{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--next);border-radius:10px;padding:18px 20px;margin:16px 0}
+.phase.done{border-left-color:var(--done)}.phase.now{border-left-color:var(--now)}.phase.block{border-left-color:var(--block)}
+.phase h2{font:700 1.2rem "Space Grotesk",system-ui,sans-serif;margin:0 0 4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tag{font:600 .75rem Inter,sans-serif;padding:2px 8px;border-radius:99px;color:#fff;background:var(--next)}
+.done .tag{background:var(--done)}.now .tag{background:var(--now)}.block .tag{background:var(--block)}
+.who{color:var(--mute);font-size:.9rem;margin:0 0 10px}
+ul{margin:6px 0 0;padding-left:20px}li{margin:3px 0}
+li.x{color:var(--mute);text-decoration:line-through}
+code{background:rgba(127,127,127,.15);padding:1px 5px;border-radius:4px;font-size:.88em}
+.flow{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;overflow-x:auto;white-space:nowrap;font:14px ui-monospace,monospace}
+</style>
+</head>
+<body>
+<main>
+<h1>One-Person Studio</h1>
+<p class="sub">One line from a solo creator at 2am. Four Switch agents. Three videos ready for approval by morning. <span class="deadline">Deadline: Nov 7, 11:59 PM IST</span></p>
+
+<div class="flow">creator → Brief → Keeper (brand) → Brief → Reel → Cut → Keeper (final) → creator: APPROVE / CHANGE</div>
+
+<section class="phase done">
+<h2>Phase 1. Repo, template, brand kit, skills <span class="tag">done</span></h2>
+<p class="who">Owner: Claude</p>
+<ul>
+<li><code>studio.template.yaml</code>: Brief, Reel, Cut, Keeper, one <code>studio</code> room, a shared <code>board</code> doc, no inputs needed</li>
+<li><code>brand/brand-kit.md</code>: fictional Driftnote brand in DESIGN.md format, facts, voice, never-say list</li>
+<li><code>skills/{brief,reel,cut,keeper,formats}/</code>: 24 skills from super-creator, fonts left out, credited</li>
+<li><code>samples/asks.md</code>, <code>SETUP.md</code>, <code>DEMO.md</code>, <code>LICENSE</code> (MIT), README draft</li>
+</ul>
+</section>
+
+<section class="phase block">
+<h2>Phase 2. Switch running and one real end-to-end ask <span class="tag">blocked: machine</span></h2>
+<p class="who">Owner: Nishit (Console), then Claude (fixes)</p>
+<ul>
+<li>Get this Mac enrolled: Console, Agents, create one Claude Code agent on this computer, then check Gateway, Machines shows it online</li>
+<li>Rename the GitHub repo to <code>one-person-studio</code> (old URL keeps redirecting, template clones still work)</li>
+<li>Import <code>studio.template.yaml</code>, Use template, confirm four hellos in <code>studio</code></li>
+<li>Paste <code>@studio-brief launch video for my app</code> and let it run to "Ready for review"</li>
+<li>Fix any hand-off that stalls, then rerun once clean</li>
+<li>Save the room transcript to <code>demo/run-A1.md</code></li>
+</ul>
+</section>
+
+<section class="phase now">
+<h2>Phase 3. README with real evidence <span class="tag">next</span></h2>
+<p class="who">Owner: Claude</p>
+<ul>
+<li>Swap the README's "Try it" for what the real run showed</li>
+<li>Add 3 screenshots: the ask, Keeper's flag, Ready for review</li>
+<li>Pick Track 01 or Track 02 wording once Nishit decides</li>
+</ul>
+</section>
+
+<section class="phase">
+<h2>Phase 4. The 3 minute demo <span class="tag">later</span></h2>
+<p class="who">Owner: Nishit records, Claude preps</p>
+<ul>
+<li>Follow <code>DEMO.md</code>, one take per row</li>
+<li>Only show real output from the run. No mocked videos, no invented URLs</li>
+<li>Optional: render one approved cut with a real tool, only after APPROVE</li>
+</ul>
+</section>
+
+<section class="phase">
+<h2>Phase 5. Submit <span class="tag">Nishit only</span></h2>
+<p class="who">Owner: Nishit</p>
+<ul>
+<li>Nishit picks the track and files the hackathon form personally</li>
+<li>Repo public, README, demo video link, template file</li>
+</ul>
+</section>
+</main>
+</body>
+</html>
