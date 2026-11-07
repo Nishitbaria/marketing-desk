@@ -10,7 +10,7 @@
 
 **A video team for solo creators that lives in your chat. You send one line, and four AI agents write it, render it and check it. You approve the final cut.**
 
-If you make videos alone, you are the writer, the editor and the person checking your own work at 2am. One-Person Studio gives you a small team instead. You drop one line in a Switch room, something like "make a 30s launch video for Notely", and four agents take it from there. If a fact is missing, the team stops and asks you instead of guessing, and nothing is final until you approve it.
+If you make videos alone, you are the writer, the editor and the person checking your own work at 2am. One-Person Studio gives you a small team instead. You drop one line in a Switch room, something like "make a 30s launch video for Notely", and five agents take it from there. If a fact is missing, the team stops and asks you instead of guessing, and nothing is final until you approve it.
 
 Built on [Switch](https://docs.switchagents.ai) for the WeMakeDevs "Flip the Switch" hackathon.
 
@@ -18,7 +18,7 @@ Built on [Switch](https://docs.switchagents.ai) for the WeMakeDevs "Flip the Swi
 
 ### At a glance
 
-- **4 agents in one Switch room**, all declared in a single template: [agents/studio.template.yaml](agents/studio.template.yaml).
+- **5 agents in one Switch room**, all declared in a single template: [agents/studio.template.yaml](agents/studio.template.yaml).
 - **You talk to one agent.** Director routes the rest, and every handoff is a plain `@mention` you can read in the room.
 - **Facts are never invented.** A missing price or link becomes `[need: ...]`, and the chain stops until you answer.
 - **Nothing gets published.** Agents never upload or post, and only you can approve a video.
@@ -31,6 +31,7 @@ Built on [Switch](https://docs.switchagents.ai) for the WeMakeDevs "Flip the Swi
 | --- | --- | --- | --- |
 | **Director** `studio-director` | Leads the team. The only agent you talk to | A brief, a one-line status after each handoff, and a tag to you with the MP4 path | [skills/director/](skills/director/) |
 | **Quill** `studio-quill` | Writes every word in the video | Hook options, a timestamped script, a shot list and open questions | [skills/quill/](skills/quill/) |
+| **Voice** `studio-voice` | Speaks the script | One audio clip per beat under `renders/<slug>-voice/` | [skills/voice/](skills/voice/) |
 | **Cut** `studio-cut` | Renders the script with Remotion and remocn components | An MP4 under `renders/<slug>/`, measured with `ffprobe` | [skills/cut/](skills/cut/) |
 | **Keeper** `studio-keeper` | Checks scripts and renders against your brand | PASS or FIX with up to 5 exact fixes | [skills/keeper/](skills/keeper/) |
 
@@ -38,7 +39,9 @@ Built on [Switch](https://docs.switchagents.ai) for the WeMakeDevs "Flip the Swi
 
 **Quill** writes hooks, launch scripts, explainers, UGC talking-head scripts and faceless voiceovers. It follows `brand/brand.md` and `brand/MOTION.md`, and it lists what it does not know instead of inventing it.
 
-**Cut** picks up a script Keeper passed, builds the video and renders it. It uses Quill's words unchanged.
+**Voice** reads Quill's Spoken lines word for word and makes one clip per beat. It uses Kokoro if installed, then the macOS voice, then no audio, so a missing tool never stops the chain. It says in the room which one it used.
+
+**Cut** picks up Voice's audio and the script Keeper passed, builds the video and renders it. It uses Quill's words unchanged.
 
 **Keeper** holds the brand. It checks each script and render, then tells the next agent what to do. PASS is not approval: you are the only approver.
 
@@ -54,7 +57,9 @@ flowchart TD
   K1 -->|FIX, max 2 loops| Q
   K1 -->|PASS with a need| N[Director asks you]
   N -->|your answer| Q
-  K1 -->|PASS| R[Cut]
+  K1 -->|PASS| V[Voice]
+  V -->|audio| R[Cut]
+  V -->|line too long| Q
   R -->|MP4| K2{Keeper: render}
   K2 -->|FIX, max 2 loops| R
   K2 -->|PASS| D2[Director]
@@ -91,7 +96,10 @@ Keeper:    BRAND CHECK | script | Notely launch
 Director:  script ✓ · brand FIX 1 of 2 · revising…
 
 Keeper:    Verdict: PASS
-           Next: @studio-cut render it
+           Next: @studio-voice make the voice
+
+Voice:     Tier: kokoro
+           @studio-cut render it
 
 Cut:       renders/notely/notely.mp4
            30.0s, 1080x1920, 9:16 (from ffprobe)
@@ -127,7 +135,7 @@ You need [Switch Console](https://docs.switchagents.ai/switch-rooms/getting-star
 3. Check that **Gateway > Machines** shows this computer online.
 4. Open **Templates**, choose **Import template**, paste `agents/studio.template.yaml`, click **Import**, then **Save**.
 5. Choose **Use template**. Set `directory` to this repo's absolute path. Set `bridge` to your chat app's display name, or leave it empty for the server's default app.
-6. Choose **Create agents and room**. Director, Quill, Cut and Keeper each say hello in the `one-person-studio` room.
+6. Choose **Create agents and room**. Director, Quill, Voice, Cut and Keeper each say hello in the `one-person-studio` room.
 
 To import a new version, delete the existing `studio-*` agents first. Switch refuses a name already in use.
 

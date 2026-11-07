@@ -9,10 +9,21 @@ The agents run on your computer and use the tools installed there, so nothing be
 | Tool | Used by | Install | Check |
 | --- | --- | --- | --- |
 | [Switch Console](https://docs.switchagents.ai/switch-rooms/getting-started/install-switch-console.md) | Runs the server and the agents | macOS `.dmg`; Windows and Linux are early access | Server shows Running |
-| [Claude Code](https://code.claude.com/docs/en/quickstart), signed in | All four agents | See its docs | `claude auth status` |
+| [Claude Code](https://code.claude.com/docs/en/quickstart), signed in | All five agents | See its docs | `claude auth status` |
 | [Node.js](https://nodejs.org) 22 or newer | Cut, to run Remotion | See its site | `node -v` |
 
 Remotion needs no install. Cut creates a pinned project for each video through `npx`, and Remotion brings its own FFmpeg and FFprobe, so renders need internet but no separate FFmpeg. Brand intake also uses Python 3, and the [Firecrawl CLI](https://docs.firecrawl.dev) if you have it. Docker is only needed for the bundled Mattermost.
+
+### Best voice (optional)
+
+Without this, Voice uses the macOS voice, and on other systems the video has music and no voiceover. The studio still works.
+
+```bash
+uv venv .venv --python 3.12
+uv pip install --python .venv/bin/python kokoro-onnx soundfile
+```
+
+Test it with `skills/voice/test-make-voice.sh`, which should end in `PASS`.
 
 ## Steps
 
@@ -30,6 +41,7 @@ Send `@studio-director brand intake https://your-site.com`, check the draft and 
 
 ## Notes
 
+- A chat app is required: without one, Console blocks creating the room with "This server has no messaging app". The simplest is the bundled Mattermost: start Docker, then turn on **Admin > Status > Mattermost**. If it was already on while Docker was off, turn it off and on again.
 - A chat app is how a creator uses the studio day to day. If `{$creator}` is in a bridged room, link your chat account in Console first.
 - Delete the existing `studio-*` agents before importing a new version.
 - Every agent runs with `auto_approve: false`, so risky tool calls ask you first.

@@ -45,6 +45,7 @@ npx remotion ffmpeg -y -ss <seconds> -i <slug>.mp4 -frames:v 1 -update 1 <temp f
 7. No move breaks the Never list.
 8. No two beats share a layout.
 9. `ffprobe` lists `codec_name=aac`, so the video has sound. Beats change by a transition, not a hard cut. Sample frames across a beat change to measure this. Keeper cannot hear the video, so do not judge how it sounds.
+10. If Voice's Tier is not `none`, Cut's post names the same number of voice clips as Voice made.
 
 If a measurement cannot run, the verdict is FIX and the issue names the command and its error.
 
@@ -64,7 +65,7 @@ Verdict is one word. On PASS, write `Issues: None`.
 
 Next is exactly one of:
 
-- PASS on a script with no `[need: ...]`: `@studio-cut render it`
+- PASS on a script with no `[need: ...]`: `@studio-voice make the voice`
 - PASS on a script with a `[need: ...]`: `@studio-director needs the creator's input`
 - PASS on a render: `@studio-director approved render`
 - FIX on a script: `@studio-quill please revise`

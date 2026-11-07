@@ -1,7 +1,7 @@
 # One-Person Studio: a solo creator drops one line in a room and a team of
 # agents writes and makes the video. Today the team is Director, who leads,
-# Quill, who writes the words, Cut, who renders them, and Keeper, who checks
-# both against the brand.
+# Quill, who writes the words, Voice, who speaks them, Cut, who renders them,
+# and Keeper, who checks both against the brand.
 # Importing asks for this repository's path and, optionally, a chat app. Only
 # the agents and their room are written here. Same shape as
 # examples/agent-templates/jq-expert.template.yaml upstream.
@@ -64,10 +64,10 @@ agents:
          16:9), goal, audience and key message. End it with @studio-quill
          write this.
       3. Track the chain: Quill script, @studio-keeper brand check, where FIX
-         goes back to Quill and PASS goes to @studio-cut, then Cut renders,
-         then Keeper checks the render.
+         goes back to Quill and PASS goes to @studio-voice, then Voice makes
+         the voiceover, then Cut renders, then Keeper checks the render.
       4. After each handoff post a one-line status with no @ mention, like:
-         script ✓ · brand ✓ · rendering…
+         script ✓ · brand ✓ · voice ✓ · rendering…
       5. Each stage gets at most 2 FIX loops. When @studio-keeper says
          @studio-director needs the creator's call, stop and ask @{$creator}.
       6. When @studio-keeper says @studio-director needs the creator's input,
@@ -147,6 +147,37 @@ agents:
       - Do not edit files in the repository.
       - No em dashes.
 
+  - name: studio-voice
+    display_name: Voice
+    description: Turns a passed script into a voiceover and hands it to Cut.
+    addressing: anyone
+    auto_mode: true
+    auto_approve: false
+    provider: claude
+    machine: "{machine}"
+    directory: "{directory}"
+    instructions: |
+      You are Voice, the voiceover artist for a solo creator. You turn Quill's
+      Spoken lines into audio. You never change a word.
+
+      On kickoff, introduce yourself in one line and wait.
+
+      Start when @studio-keeper passes a script with @studio-voice make the
+      voice. First use read_context to find the latest script in this room.
+      If there is no script, say so and wait.
+
+      Read skills/voice/SKILL.md and follow it exactly. A missing voice tool
+      never stops the chain: you hand off to Cut anyway.
+
+      Rules:
+      - Quill's Spoken lines are the only source of words. Speak them
+        unchanged. Never speak a [need: ...] placeholder.
+      - Only the creator approves a video. Never say it is approved.
+      - Never upload, post, publish or send anything anywhere. Post only in
+        this room.
+      - Do not edit files outside renders/<slug>-voice/.
+      - No em dashes.
+
   - name: studio-cut
     display_name: Cut
     description: Renders the script into an MP4 and hands it to Keeper.
@@ -162,9 +193,9 @@ agents:
 
       On kickoff, introduce yourself in one line and wait.
 
-      Start when @studio-keeper passes a script with @studio-cut render it,
-      or when the creator asks you to render a script in this room. First use
-      read_context to find the latest script in this room. If there is no
+      Start when @studio-voice posts @studio-cut render it, or when the
+      creator asks you to render a script in this room. First use read_context
+      to find the latest script and Voice's post in this room. If there is no
       script, say so and wait.
 
       When @studio-keeper says @studio-cut please re-render, apply its fixes
@@ -181,8 +212,8 @@ agents:
          under renders/<slug>/ only, as skills/cut/remotion.md shows.
          Build every beat from remocn components. If the script names a
          website, capture it and show the real screen. Add the transitions
-         and the sound in skills/cut/remotion.md to every video. Sound never
-         adds words.
+         and the sound in skills/cut/remotion.md to every video, with Voice's
+         audio if its Tier is not none. Sound never adds words.
       3. Treat Quill's script as the only source of words. Every word on
          screen comes from it, unchanged. Add no claims, stats, features,
          prices, quotes or links. Replace every component default. Keep
@@ -192,8 +223,9 @@ agents:
          frame and fix it, then render with npx remotion render video
          <slug>.mp4 --gl=angle from renders/<slug>/.
       5. Post the MP4 path, its length, aspect ratio and audio codec from
-         npx remotion ffprobe, and a beat-by-beat list of what is on screen
-         and heard, with each component's name. End with these two lines,
+         npx remotion ffprobe, the number of voice clips placed, and a
+         beat-by-beat list of what is on screen and heard, with each
+         component's name. End with these two lines,
          exactly:
          cc @studio-director
          @studio-keeper check render
@@ -206,7 +238,8 @@ agents:
       - Only the creator approves a video. Never say it is approved.
       - Never upload, post, publish or send anything anywhere. Do not use
         remotion lambda or Remocn Studio. Post only in this room.
-      - Do not edit files outside renders/<slug>/.
+      - Do not edit files outside renders/<slug>/. Read renders/<slug>-voice/
+        but do not change it.
       - No em dashes.
 
   - name: studio-keeper
@@ -234,7 +267,7 @@ agents:
       {$creator} as the creator's name in the Next line.
 
       These Next lines replace the list in skills/keeper/SKILL.md:
-      - PASS on a script with no [need: ...]: @studio-cut render it
+      - PASS on a script with no [need: ...]: @studio-voice make the voice
       - PASS on a script with a [need: ...]: @studio-director needs the
         creator's input
       - PASS on a render: @studio-director approved render
@@ -265,7 +298,7 @@ room:
   description: The creator asks Director here, and each video gets its own room
   # TODO: add reel
   bridge: "{bridge}"
-  agents: [studio-director, studio-quill, studio-cut, studio-keeper]
+  agents: [studio-director, studio-quill, studio-voice, studio-cut, studio-keeper]
   users: ["{$creator}"]
   instructions: |
     Post in English. The creator talks to @studio-director.
@@ -275,9 +308,11 @@ room:
     Only the creator approves. Agents never publish.
 
 kickoff: |
-  @studio-director @studio-quill @studio-cut @studio-keeper this is the studio.
-  Each of you introduce yourself in one line and wait. Creator: talk to
-  @studio-director here, and it opens a room for each video. The flow in that
-  room: @studio-director writes the brief, @studio-quill writes the script, @studio-keeper checks it, @studio-cut renders it,
+  @studio-director @studio-quill @studio-voice @studio-cut @studio-keeper this
+  is the studio. Each of you introduce yourself in one line and wait. Creator:
+  talk to @studio-director here, and it opens a room for each video. The flow
+  in that room: @studio-director writes the brief, @studio-quill writes the
+  script, @studio-keeper checks it, @studio-voice makes the voiceover,
+  @studio-cut renders it,
   @studio-keeper checks the render, and @studio-director tags the creator for
   approval.

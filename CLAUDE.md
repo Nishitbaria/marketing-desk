@@ -10,10 +10,11 @@ Video team for solo creators on Switch, for the WeMakeDevs Flip the Switch hacka
 | --- | --- | --- |
 | `studio-director` | Leads the team, the only agent the creator talks to | `skills/director/` |
 | `studio-quill` | Writes the script | `skills/quill/` |
+| `studio-voice` | Makes the voiceover, falls back if a tool is missing | `skills/voice/` |
 | `studio-cut` | Renders the MP4 into `renders/<slug>/` | `skills/cut/` |
 | `studio-keeper` | Checks scripts and renders, replies PASS or FIX | `skills/keeper/` |
 
-Flow: creator asks Director in the main room, Director opens a video room from `agents/video-room.template.yaml`, then Quill writes, Keeper checks, Cut renders, Keeper checks and Director tags the creator there. Reel is planned and not built.
+Flow: creator asks Director in the main room, Director opens a video room from `agents/video-room.template.yaml`, then Quill writes, Keeper checks, Voice speaks, Cut renders, Keeper checks and Director tags the creator there. Reel is planned and not built.
 
 ## Rules
 
@@ -22,8 +23,8 @@ Flow: creator asks Director in the main room, Director opens a video room from `
 - `brand/brand-kit.md` is demo data for the fictional Driftnote. `brand/brand.md` and `brand/MOTION.md` come from it. Read them before any visual or script work.
 - Template files take only fields documented in Switch's `docs/TEMPLATES.md`. Do not invent fields.
 - Keep `auto_approve: false` on every agent. A template has no include, so all agents live in one file.
-- Remotion is the only render engine, with remocn components. Pins are `create-video@4.0.541`, `@remotion/sfx@4.0.541`, `@remotion/transitions@4.0.541` and `shadcn@4.23.0`. New renders never use HyperFrames. Do not run `npx skills add`, the remocn skill is vendored in `skills/cut/remocn/`.
-- Commit no secrets, no `.hyperframes/`, no `out/`, and no MP4 except the one Notely demo.
+- Remotion is the only render engine, with remocn components. Pins are `create-video@4.0.541`, `@remotion/sfx@4.0.541`, `@remotion/transitions@4.0.541` and `shadcn@4.23.0`. New renders never use HyperFrames. Voice uses only `hyperframes@0.9.19 tts`, for Kokoro audio. Do not run `npx skills add`, the remocn skill is vendored in `skills/cut/remocn/`.
+- Commit no secrets, no `.hyperframes/`, no `out/`, no `*-voice/`, no generated audio, and no MP4 except the one Notely demo.
 - Do not read `~/Library/Application Support/switchdash/control-api.json` or any `credentials.json`.
 - No em dashes in any file, script or reply.
 

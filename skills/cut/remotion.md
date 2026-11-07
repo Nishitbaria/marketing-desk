@@ -96,7 +96,23 @@ const music = (f: number) =>
 <Sfx src={whoosh} at={firstFrameOfFade} volume={0.3} />
 ```
 
-`lofi-76bpm.mp3` is the studio's own 50s loop. A voiceover file goes in `public/` and plays with another `<Audio>`. With a voiceover, drop the music from 0.6 to 0.2 so it ducks. Cut does not generate voiceovers.
+`lofi-76bpm.mp3` is the studio's own 50s loop.
+
+### Voiceover
+
+Voice makes the voiceover, Cut places it. If Voice's post says `Tier: none`, skip this part.
+
+1. Copy `renders/<slug>-voice/*.wav` into `public/voice/`.
+2. Read `renders/<slug>-voice/manifest.txt`. Each line is `start|length|file|ok`, in seconds.
+3. Place one clip per line beside the `TransitionSeries`, at the script's start second. Keep each clip at volume 1.
+
+```tsx
+<Sfx src={staticFile("voice/02.wav")} at={3 * 30} volume={1} />
+```
+
+4. Drop the music from 0.6 to 0.2 so it ducks.
+
+Clips use the script's timestamps, so they stay on the beat even though transitions overlap. Set `TOTAL` to the Format length, and give the last beat enough hold that the video still matches it.
 
 ## Rules
 

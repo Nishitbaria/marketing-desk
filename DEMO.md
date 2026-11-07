@@ -6,12 +6,12 @@ Every number on screen comes from the real run. Show a real FIX only if one happ
 
 | Time | On screen | Say |
 |---|---|---|
-| 0:00 | The chat room with Director, Quill, Keeper and Cut | "I'm a solo creator with no video team. This is my studio, and I'm the only human in it." |
+| 0:00 | The chat room with Director, Quill, Keeper, Voice and Cut | "I'm a solo creator with no video team. This is my studio, and I'm the only human in it." |
 | 0:15 | Type `@studio-director 30s launch video for Driftnote Plus, and mention the price` | "One line." |
 | 0:30 | Brief, script, Keeper check | "Quill writes. The price isn't in my brand files, so it writes `[need: price]` instead of a number." |
 | 0:55 | Director stops and tags me | "This is the point. The chain stops here. Cut has not started." |
 | 1:15 | Type `@studio-director` with the price | "This price is synthetic, for the demo. Only I can give it." |
-| 1:35 | Quill revises, Keeper passes, Cut renders | "Cut renders a real MP4 with Remotion and remocn components." |
+| 1:35 | Quill revises, Keeper passes, Voice speaks, Cut renders | "Voice speaks the exact words, one clip per beat. Cut renders a real MP4 with Remotion and remocn components." |
 | 2:00 | Keeper's render check with `ffprobe` values | "Keeper measures the file and the frames. It doesn't take Cut's word for it." |
 | 2:20 | Play the MP4 | "That's the video." |
 | 2:35 | Type `@studio-director approve`, Director closes | "Only I can approve. Nothing was published." |

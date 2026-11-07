@@ -1,4 +1,7 @@
 .hyperframes/
 out/
 *.mp4
+*.mp3
+*.wav
+*-voice/
 !notely-launch/notely-launch.mp4

@@ -19,11 +19,12 @@ room:
   name: "video-{video}"
   description: "Makes one video: {video}"
   bridge: "{bridge}"
-  agents: [studio-director, studio-quill, studio-cut, studio-keeper]
+  agents: [studio-director, studio-quill, studio-voice, studio-cut, studio-keeper]
   users: ["{$creator}"]
   instructions: |
     Video room for {video}. This room makes that one video.
-    Cut: use {video} as the slug, so the video builds in renders/{video}/.
+    Voice and Cut: use {video} as the slug. Voice writes to
+    renders/{video}-voice/ and the video builds in renders/{video}/.
     Post in English. The creator talks to @studio-director.
     A mention wakes that agent, so use one only for a real handoff.
     Before you start, use read_context to find the latest work.
