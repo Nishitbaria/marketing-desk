@@ -4,87 +4,233 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>One-Person Studio Plan</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-:root{--bg:#09090b;--fg:#fafafa;--mute:#a1a1aa;--card:#09090b;--line:#27272a;--muted-bg:#18181b;--ring:#3f3f46;--done:#22c55e;--now:#fafafa;--block:#ef4444}
+:root{
+  --bg:#09090b;--fg:#fafafa;--mute:#a1a1aa;--dim:#71717a;--line:#27272a;--muted-bg:#18181b;--hover:#1f1f23;
+  --done:#22c55e;--block:#ef4444;--warn:#f59e0b;
+  --w-normal:400;--w-medium:500;--w-semibold:600;
+  --z-sticky:100;
+}
 *{box-sizing:border-box}
+html{color-scheme:dark}
 body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.6 Geist,Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-main{max-width:760px;margin:0 auto;padding:56px 16px 96px}
-h1{font-size:30px;font-weight:600;letter-spacing:-.025em;line-height:1.2;margin:0 0 8px}
+main{max-width:760px;margin:0 auto;padding:0 16px 96px}
+h1,h2{text-wrap:balance}
+h1{font-size:30px;font-weight:var(--w-semibold);letter-spacing:-.025em;line-height:1.2;margin:0 0 8px}
 .sub{color:var(--mute);margin:0 0 24px;font-size:15px}
-.deadline{display:inline-flex;align-items:center;margin-top:12px;border:1px solid var(--line);background:var(--muted-bg);color:var(--fg);border-radius:6px;padding:2px 10px;font-weight:500;font-size:12px}
-.deadline::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--block);margin-right:8px}
-.phase{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.3)}
-.phase h2{font-size:16px;font-weight:600;letter-spacing:-.01em;margin:0 0 4px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.tag{font-size:12px;font-weight:500;padding:2px 10px;border-radius:9999px;border:1px solid var(--line);color:var(--mute);background:transparent}
-.done .tag{color:var(--done);border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.1)}
-.now .tag{color:#09090b;background:var(--now);border-color:var(--now)}
-.block .tag{color:var(--block);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.1)}
-.who{color:var(--mute);font-size:13px;margin:0 0 16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
-ul{margin:0;padding-left:18px}li{margin:6px 0;color:#d4d4d8}li::marker{color:#52525b}
+.num{font-variant-numeric:tabular-nums}
 code{font-family:"Geist Mono",ui-monospace,monospace;background:var(--muted-bg);border:1px solid var(--line);padding:1px 5px;border-radius:4px;font-size:12px;color:var(--fg)}
-.flow{background:var(--muted-bg);border:1px solid var(--line);border-radius:8px;padding:12px 16px;overflow-x:auto;white-space:nowrap;font:12.5px "Geist Mono",ui-monospace,monospace;color:var(--mute);margin-bottom:8px}
+
+.bar{position:sticky;top:0;z-index:var(--z-sticky);isolation:isolate;background:rgba(9,9,11,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -16px 32px;padding:12px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.count{display:flex;align-items:baseline;gap:10px}
+.count .label{color:var(--mute);font-size:12px}
+.count .t{font:var(--w-medium) 22px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:-.02em}
+.count.warn .t{color:var(--warn)}.count.late .t{color:var(--block)}
+.overall{display:flex;align-items:center;gap:10px;color:var(--mute);font-size:12px}
+.track{width:120px;height:6px;border-radius:9999px;background:var(--muted-bg);border:1px solid var(--line);overflow:hidden}
+.fill{height:100%;width:0;background:var(--fg);border-radius:inherit;transition:width 300ms cubic-bezier(.23,1,.32,1)}
+
+.card{border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.3);background:var(--bg)}
+.sprint{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.sprint .now{color:var(--mute);font-size:12px;margin:0 0 2px}
+.sprint .task{font-weight:var(--w-medium);margin:0;min-height:22px}
+.sprint .clock{font:var(--w-medium) 32px/1 "Geist Mono",ui-monospace,monospace;letter-spacing:-.03em;text-align:right}
+.controls{display:flex;gap:8px;flex-wrap:wrap;grid-column:1/-1}
+button{font:inherit;font-size:13px;font-weight:var(--w-medium);color:var(--fg);background:var(--muted-bg);border:1px solid var(--line);border-radius:8px;height:40px;padding:0 14px;cursor:pointer;transition-property:background-color,border-color,color,transform;transition-duration:150ms;transition-timing-function:ease-out}
+button:hover{background:var(--hover);border-color:#3f3f46}
+button:active{transform:scale(.96)}
+button.primary{background:var(--fg);color:#09090b;border-color:var(--fg);min-width:84px}
+button.primary:hover{background:#e4e4e7}
+button[aria-pressed="true"]{border-color:var(--fg)}
+button:focus-visible,li input:focus-visible+.box{outline:2px solid #fafafa;outline-offset:2px}
+
+.flow{background:var(--muted-bg);border:1px solid var(--line);border-radius:8px;padding:12px 16px;overflow-x:auto;white-space:nowrap;font:12.5px "Geist Mono",ui-monospace,monospace;color:var(--mute)}
+.flow::-webkit-scrollbar{height:8px}.flow::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+
+.phase h2{font-size:16px;font-weight:var(--w-semibold);letter-spacing:-.01em;margin:0 0 4px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:var(--w-medium);padding:2px 10px;border-radius:9999px;border:1px solid var(--line);color:var(--mute);white-space:nowrap}
+.tag.done{color:var(--done);border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.1)}
+.tag.now{color:#09090b;background:var(--fg);border-color:var(--fg)}
+.tag.block{color:var(--block);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.1)}
+.who{color:var(--mute);font-size:13px;margin:0 0 12px;padding-bottom:12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
+ul{list-style:none;margin:0;padding:0}
+li label{position:relative;display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;padding:9px 8px;margin:0 -8px;border-radius:8px;cursor:pointer;color:#d4d4d8;transition-property:background-color,color;transition-duration:150ms;transition-timing-function:ease-out;min-height:40px}
+li label:hover{background:var(--muted-bg)}
+li input{position:absolute;opacity:0;width:0;height:0}
+li .box{width:18px;height:18px;margin-top:2px;border:1px solid #52525b;border-radius:5px;display:grid;place-items:center;transition-property:background-color,border-color;transition-duration:150ms;transition-timing-function:ease-out}
+li .box svg{opacity:0;transform:scale(.8);transition-property:opacity,transform;transition-duration:150ms;transition-timing-function:ease-out;pointer-events:none}
+li input:checked+.box{background:var(--fg);border-color:var(--fg)}
+li input:checked+.box svg{opacity:1;transform:scale(1)}
+li input:checked~.txt{color:var(--dim);text-decoration:line-through;text-decoration-color:#52525b}
+li.next label{background:var(--muted-bg);box-shadow:inset 0 0 0 1px var(--line)}
+li.next .txt::after{content:"Next";margin-left:8px;font-size:11px;color:var(--mute);border:1px solid var(--line);border-radius:9999px;padding:0 6px;vertical-align:1px}
+.foot{display:flex;justify-content:flex-end;margin-top:24px}
+@media (max-width:520px){.bar{grid-template-columns:1fr}.sprint .clock{font-size:26px}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:0ms!important}}
 </style>
 </head>
 <body>
 <main>
+<div class="bar">
+  <div class="count" id="count"><span class="label">Deadline in</span><span class="t num" id="left">--:--:--</span></div>
+  <div class="overall"><span class="num" id="pct">0%</span><div class="track"><div class="fill" id="fill"></div></div></div>
+</div>
+
 <h1>One-Person Studio</h1>
-<p class="sub">One line from a solo creator at 2am. Four Switch agents. Three videos ready for approval by morning. <span class="deadline">Deadline: Nov 7, 11:59 PM IST</span></p>
+<p class="sub">One line from a solo creator at 2am. Four Switch agents. Three videos ready for approval by morning. Deadline Nov 7, 11:59 PM IST.</p>
+
+<section class="card sprint" aria-label="Sprint timer">
+  <div><p class="now">Working on</p><p class="task" id="sprintTask">…</p></div>
+  <div class="clock num" id="clock">25:00</div>
+  <div class="controls">
+    <button class="primary" id="go">Start</button>
+    <button id="reset">Reset</button>
+    <button data-min="15" aria-pressed="false">15 min</button>
+    <button data-min="25" aria-pressed="true">25 min</button>
+    <button data-min="45" aria-pressed="false">45 min</button>
+  </div>
+</section>
 
 <div class="flow">creator → Brief → Keeper (brand) → Brief → Reel → Cut → Keeper (final) → creator: APPROVE / CHANGE</div>
 
-<section class="phase done">
-<h2>Phase 1. Repo, template, brand kit, skills <span class="tag">done</span></h2>
-<p class="who">Owner: Claude</p>
+<div id="phases">
+<section class="card phase">
+<h2>Phase 1. Repo, template, brand kit, skills <span class="tag"></span></h2>
+<p class="who"><span>Owner: Claude</span><span class="num prog"></span></p>
 <ul>
-<li><code>studio.template.yaml</code>: Brief, Reel, Cut, Keeper, one <code>studio</code> room, a shared <code>board</code> doc, no inputs needed</li>
-<li><code>brand/brand-kit.md</code>: fictional Driftnote brand in DESIGN.md format, facts, voice, never-say list</li>
-<li><code>skills/{brief,reel,cut,keeper,formats}/</code>: 24 skills from super-creator, fonts left out, credited</li>
-<li><code>samples/asks.md</code>, <code>SETUP.md</code>, <code>DEMO.md</code>, <code>LICENSE</code> (MIT), README draft</li>
+<li data-id="1a" data-default><span class="txt"><code>studio.template.yaml</code>: four agents, one <code>studio</code> room, shared <code>board</code> doc, no inputs</span></li>
+<li data-id="1b" data-default><span class="txt"><code>brand/brand-kit.md</code>: fictional Driftnote brand in DESIGN.md format</span></li>
+<li data-id="1c" data-default><span class="txt"><code>skills/</code>: 24 skills from super-creator, credited</span></li>
+<li data-id="1d" data-default><span class="txt"><code>samples/asks.md</code>, <code>SETUP.md</code>, <code>DEMO.md</code>, <code>LICENSE</code>, README draft</span></li>
 </ul>
 </section>
 
-<section class="phase block">
-<h2>Phase 2. Switch running and one real end-to-end ask <span class="tag">blocked: machine</span></h2>
-<p class="who">Owner: Nishit (Console), then Claude (fixes)</p>
+<section class="card phase" data-blocker="machine not enrolled">
+<h2>Phase 2. Switch running and one real end-to-end ask <span class="tag"></span></h2>
+<p class="who"><span>Owner: Nishit (Console), then Claude</span><span class="num prog"></span></p>
 <ul>
-<li>Get this Mac enrolled: Console, Agents, create one Claude Code agent on this computer, then check Gateway, Machines shows it online</li>
-<li>Rename the GitHub repo to <code>one-person-studio</code> (old URL keeps redirecting, template clones still work)</li>
-<li>Import <code>studio.template.yaml</code>, Use template, confirm four hellos in <code>studio</code></li>
-<li>Paste <code>@studio-brief launch video for my app</code> and let it run to "Ready for review"</li>
-<li>Fix any hand-off that stalls, then rerun once clean</li>
-<li>Save the room transcript to <code>demo/run-A1.md</code></li>
+<li data-id="2a"><span class="txt">Enroll this Mac: Console, Agents, create one Claude Code agent here, check Gateway, Machines shows it online</span></li>
+<li data-id="2b"><span class="txt">Rename the repo to <code>one-person-studio</code></span></li>
+<li data-id="2c"><span class="txt">Import <code>studio.template.yaml</code>, Use template, see four hellos</span></li>
+<li data-id="2d"><span class="txt">Paste <code>@studio-brief launch video for my app</code>, run to "Ready for review"</span></li>
+<li data-id="2e"><span class="txt">Fix any stalled hand-off, rerun once clean</span></li>
+<li data-id="2f"><span class="txt">Save the room transcript to <code>demo/run-A1.md</code></span></li>
 </ul>
 </section>
 
-<section class="phase now">
-<h2>Phase 3. README with real evidence <span class="tag">next</span></h2>
-<p class="who">Owner: Claude</p>
+<section class="card phase">
+<h2>Phase 3. README with real evidence <span class="tag"></span></h2>
+<p class="who"><span>Owner: Claude</span><span class="num prog"></span></p>
 <ul>
-<li>Swap the README's "Try it" for what the real run showed</li>
-<li>Add 3 screenshots: the ask, Keeper's flag, Ready for review</li>
-<li>Pick Track 01 or Track 02 wording once Nishit decides</li>
+<li data-id="3a"><span class="txt">Rewrite "Try it" from what the real run showed</span></li>
+<li data-id="3b"><span class="txt">Add 3 screenshots: the ask, Keeper's flag, Ready for review</span></li>
+<li data-id="3c"><span class="txt">Track 01 or Track 02 wording once Nishit decides</span></li>
 </ul>
 </section>
 
-<section class="phase">
-<h2>Phase 4. The 3 minute demo <span class="tag">later</span></h2>
-<p class="who">Owner: Nishit records, Claude preps</p>
+<section class="card phase">
+<h2>Phase 4. The 3 minute demo <span class="tag"></span></h2>
+<p class="who"><span>Owner: Nishit records, Claude preps</span><span class="num prog"></span></p>
 <ul>
-<li>Follow <code>DEMO.md</code>, one take per row</li>
-<li>Only show real output from the run. No mocked videos, no invented URLs</li>
-<li>Optional: render one approved cut with a real tool, only after APPROVE</li>
+<li data-id="4a"><span class="txt">Follow <code>DEMO.md</code>, one take per row</span></li>
+<li data-id="4b"><span class="txt">Only real output from the run, no mocked videos or URLs</span></li>
+<li data-id="4c"><span class="txt">Optional: render one approved cut, only after APPROVE</span></li>
 </ul>
 </section>
 
-<section class="phase">
-<h2>Phase 5. Submit <span class="tag">Nishit only</span></h2>
-<p class="who">Owner: Nishit</p>
+<section class="card phase">
+<h2>Phase 5. Submit <span class="tag"></span></h2>
+<p class="who"><span>Owner: Nishit only</span><span class="num prog"></span></p>
 <ul>
-<li>Nishit picks the track and files the hackathon form personally</li>
-<li>Repo public, README, demo video link, template file</li>
+<li data-id="5a"><span class="txt">Pick the track</span></li>
+<li data-id="5b"><span class="txt">Repo public, README, demo link, template file all in place</span></li>
+<li data-id="5c"><span class="txt">Nishit files the hackathon form</span></li>
 </ul>
 </section>
+</div>
+
+<div class="foot"><button id="clear">Reset checklist</button></div>
 </main>
+
+<script>
+(function(){
+  var KEY='ops-plan-v1', DEADLINE=Date.parse('2026-11-07T23:59:00+05:30');
+  var store={get:function(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+  var tick='<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6.2 5 8.5l4.5-5" stroke="#09090b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var saved=store.get(KEY)||{};
+  var items=[].slice.call(document.querySelectorAll('li[data-id]'));
+
+  items.forEach(function(li){
+    var id=li.dataset.id, on=id in saved?saved[id]:li.hasAttribute('data-default');
+    li.innerHTML='<label><input type="checkbox"'+(on?' checked':'')+'><span class="box">'+tick+'</span>'+li.innerHTML+'</label>';
+    li.querySelector('input').addEventListener('change',function(e){saved[id]=e.target.checked;store.set(KEY,saved);render()});
+  });
+
+  function render(){
+    var total=0,done=0,nextSet=false;
+    document.querySelectorAll('.phase').forEach(function(ph){
+      var boxes=[].slice.call(ph.querySelectorAll('input')),d=boxes.filter(function(b){return b.checked}).length;
+      total+=boxes.length;done+=d;
+      ph.querySelector('.prog').textContent=d+' / '+boxes.length;
+      var tag=ph.querySelector('.tag'),all=d===boxes.length,current=!all&&!nextSet,blocked=current&&ph.dataset.blocker;
+      tag.className='tag'+(all?' done':blocked?' block':current?' now':'');
+      tag.textContent=all?'Done':blocked?'Blocked: '+ph.dataset.blocker:current?'In progress':'Later';
+      ph.querySelectorAll('li').forEach(function(li){li.classList.remove('next')});
+      if(current){
+        var li=boxes.find(function(b){return !b.checked}).closest('li');
+        li.classList.add('next');nextSet=true;
+        document.getElementById('sprintTask').textContent=li.querySelector('.txt').textContent;
+      }
+    });
+    if(!nextSet)document.getElementById('sprintTask').textContent='Everything is done. Go submit.';
+    var p=Math.round(done/total*100);
+    document.getElementById('pct').textContent=p+'%';
+    document.getElementById('fill').style.width=p+'%';
+  }
+  render();
+
+  function pad(n){return String(n).padStart(2,'0')}
+  var countEl=document.getElementById('count'),leftEl=document.getElementById('left');
+  function countdown(){
+    var ms=DEADLINE-Date.now(),late=ms<0;ms=Math.abs(ms);
+    var h=Math.floor(ms/36e5),m=Math.floor(ms/6e4)%60,s=Math.floor(ms/1e3)%60;
+    leftEl.textContent=(late?'-':'')+pad(h)+':'+pad(m)+':'+pad(s);
+    countEl.querySelector('.label').textContent=late?'Past deadline by':'Deadline in';
+    countEl.className='count'+(late?' late':h<3?' warn':'');
+  }
+  countdown();setInterval(countdown,1000);
+
+  var S=store.get(KEY+'-sprint')||{mins:25,end:null,left:25*60e3};
+  var clock=document.getElementById('clock'),go=document.getElementById('go'),timer=null;
+  function remaining(){return S.end?Math.max(0,S.end-Date.now()):S.left}
+  function save(){store.set(KEY+'-sprint',S)}
+  function stop(){clearInterval(timer);timer=null}
+  function draw(){
+    var r=remaining(),m=Math.floor(r/6e4),s=Math.floor(r/1e3)%60;
+    clock.textContent=pad(m)+':'+pad(s);
+    go.textContent=S.end?'Pause':r>0&&r<S.mins*60e3?'Resume':'Start';
+    document.title=S.end?pad(m)+':'+pad(s)+' · Studio plan':'One-Person Studio Plan';
+    if(S.end&&r===0){S.end=null;S.left=0;save();stop();go.textContent='Start';document.title='Time is up · Studio plan'}
+  }
+  function run(){stop();timer=setInterval(draw,250);draw()}
+  go.addEventListener('click',function(){
+    if(S.end){S.left=remaining();S.end=null;stop();draw()}
+    else{if(S.left<=0)S.left=S.mins*60e3;S.end=Date.now()+S.left;run()}
+    save();
+  });
+  document.getElementById('reset').addEventListener('click',function(){S.end=null;S.left=S.mins*60e3;save();stop();draw()});
+  document.querySelectorAll('[data-min]').forEach(function(b){
+    b.setAttribute('aria-pressed',String(+b.dataset.min===S.mins));
+    b.addEventListener('click',function(){
+      S.mins=+b.dataset.min;S.end=null;S.left=S.mins*60e3;save();stop();draw();
+      document.querySelectorAll('[data-min]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    });
+  });
+  S.end?run():draw();
+
+  document.getElementById('clear').addEventListener('click',function(){saved={};store.set(KEY,saved);items.forEach(function(li){li.querySelector('input').checked=li.hasAttribute('data-default')});render()});
+})();
+</script>
 </body>
 </html>
