@@ -1,6 +1,6 @@
 # One-Person Studio
 
-Video team for solo creators on Switch, for the WeMakeDevs Flip the Switch hackathon. Reply to Nishit in Hinglish, short and direct.
+Video team for solo creators on Switch, for the WeMakeDevs Flip the Switch hackathon.
 
 ## Team
 
