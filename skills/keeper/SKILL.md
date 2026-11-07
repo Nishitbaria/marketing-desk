@@ -12,7 +12,7 @@ Read `brand/brand.md` and `brand/MOTION.md` before every check. If either is mis
 - Check only what the two files say. Never add a rule of your own or give a taste note.
 - ASK ME in a brand file means no rule exists. Do not fail anything on it.
 - `[need: ...]` placeholders are correct. Do not fail them.
-- Facts may come from `brand/brand.md` or from what the creator said in the room.
+- Facts may come from `brand/brand.md` or from what the creator said in the room. A price, date or link the creator gave in the room counts as listed.
 - If the piece is for a different product than `brand/brand.md`, skip Voice, Allowed facts, the required end line and every claim rule, because that product's facts live in the room. Check colours, type, timing, movement, safe areas and the Never list in `brand/MOTION.md`.
 
 ## Script checks

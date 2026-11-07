@@ -129,9 +129,10 @@ agents:
       - Never invent product facts, features, prices, stats, quotes or links.
         Use only what the creator said in the room and, when it describes
         the same product, what brand/brand.md lists as facts. Anything else goes
-        in Open questions, and the script uses a placeholder such as
-        [need: CTA link] rather than a guess. Sample entries, on-screen data
-        and user stories count as facts: never write them as illustration.
+        in Open questions. If the ask needs that fact in the video, the script
+        uses a placeholder such as [need: price] rather than a guess. Sample
+        entries, on-screen data and user stories count as facts: never write
+        them as illustration.
       - Never publish, upload or send anything anywhere. Post only in this room.
       - Never generate images, video or audio, and never call a tool that does.
       - Do not edit files in the repository.
@@ -170,12 +171,13 @@ agents:
          renders/<slug>/ only.
       3. Treat Quill's script as the only source of words. Every word on
          screen comes from it, unchanged. Add no claims, stats, features,
-         prices, quotes or links. Keep placeholders such as [need: CTA link]
+         prices, quotes or links. Keep placeholders such as [need: price]
          as written. If a line does not fit a beat, stop and ask in the room.
          Do not rewrite it.
-      4. Run the checks in skills/cut/hyperframes.md, look at one frame per
-         beat, then render with npx --yes hyperframes@0.9.19 render --output
-         <slug>.mp4 from renders/<slug>/.
+      4. Run check, then snapshot one time per on-screen card as
+         skills/cut/hyperframes.md shows. Look at each frame, then render with
+         npx --yes hyperframes@0.9.19 render --output <slug>.mp4 from
+         renders/<slug>/.
       5. Post the MP4 path, its length and aspect ratio from ffprobe, and a
          beat-by-beat list of what is on screen. End with these two lines,
          exactly:

@@ -1,6 +1,6 @@
 # One-Person Studio
 
-A video team for solo creators, built on [Switch](https://docs.switchagents.ai) for the WeMakeDevs "Flip the Switch" hackathon. You drop one line in Slack or Discord and agents write and make the video. You are the only human and you approve the final cut.
+A video team for solo creators, built on [Switch](https://docs.switchagents.ai) for the WeMakeDevs "Flip the Switch" hackathon. You drop one line in your chat app and agents write and make the video. If a fact is missing, the team stops and asks you instead of guessing. You are the only human and you approve the final cut.
 
 Director leads the team and is the only agent you talk to. The planned team is Quill for words, Reel for visuals, Cut for the edit and Keeper for brand checks. **Director, Quill, Cut and Keeper are in the template today.**
 
@@ -21,16 +21,18 @@ flowchart TD
   D -->|brief| Q[Quill]
   Q -->|script| K1{Keeper: script}
   K1 -->|FIX, max 2 loops| Q
+  K1 -->|PASS with a need| N[Director asks you]
+  N -->|your answer| Q
   K1 -->|PASS| R[Cut]
   R -->|MP4| K2{Keeper: render}
   K2 -->|FIX, max 2 loops| R
   K2 -->|PASS| D2[Director]
-  D2 -->|MP4 path, approve or request changes| C
+  D2 -->|MP4 path, approve or your change| C
 ```
 
 ### What Director does
 
-Director reads your one-line ask, picks launch, explainer or faceless, posts a short brief and tags Quill. It tracks the chain, posts a one-line status after each handoff and allows 2 FIX loops per stage before it asks you. When the final render passes, it tags you with the MP4 path. Ask it:
+Director reads your one-line ask, picks launch, explainer or faceless, posts a short brief and tags Quill. It tracks the chain, posts a one-line status after each handoff and allows 2 FIX loops per stage before it asks you. If a script still holds a `[need: ...]`, it stops and asks you for the fact. When the final render passes, it tags you with the MP4 path, and you reply `@studio-director approve` or your change. Ask it:
 
 ```
 @studio-director make a 30s launch video for Notely
@@ -48,7 +50,7 @@ Quill writes every word in a video: hooks, launch scripts, explainers, UGC talki
 
 It replies in the room with the format, 3 hook options, a timestamped script, a shot list and open questions, then ends with `ready for @studio-keeper brand check`.
 
-Quill follows `brand/brand-kit.md` and lists what it does not know instead of inventing it. It never generates media, never publishes and never posts outside the room.
+Quill follows `brand/brand.md` and `brand/MOTION.md` and lists what it does not know instead of inventing it. It never generates media, never publishes and never posts outside the room.
 
 ### What Cut does
 
@@ -65,18 +67,25 @@ Keeper checks each script and render against `brand/brand.md` and `brand/MOTION.
 ## Import it
 
 1. In Switch Console, open **Templates**, choose **Import template**, paste `agents/studio.template.yaml` and click **Import**, then **Save**. Steps for a new install are in [SETUP.md](SETUP.md).
-2. Choose **Use template**, then **Create agents and room**. The form asks for nothing; provider, machine and directory sit under Advanced.
-3. Director, Quill, Cut and Keeper say hello in the `studio-studio` room.
+2. Choose **Use template**. Set `directory` to this repo's absolute path, and set `bridge` to your chat app's display name. Leave `bridge` empty for the server's default app. Provider and machine sit under Advanced.
+3. Choose **Create agents and room**. Director, Quill, Cut and Keeper say hello in the `studio-studio` room.
 
-`directory` defaults to one absolute path on the author's machine. On another machine, change it under Advanced to this repo's root.
+To import a new version, delete the existing `studio-*` agents first. Switch refuses a name already in use.
+
+## Connect a chat app
+
+1. Set up the chat app in Switch Console.
+2. Link your chat account to your Switch user. The form offers this, and agents refuse an unlinked account.
+3. Import the template with `bridge` set to that app.
+4. Tag `@studio-director` in every message. A message with no tag may not reach it once other agents have posted.
 
 ## Test it
 
-Send each ask in [samples/asks.md](samples/asks.md). Quill passes if the reply has all six parts, stays in brand tone, lists open questions instead of making up facts, and ends with the required line.
+Send an ask from [samples/asks.md](samples/asks.md). The run passes if the team stops on any missing fact, Keeper measures the render with `ffprobe`, and nothing closes until you approve.
 
 ## Make it yours
 
-Replace `brand/brand-kit.md`. The demo brand, Driftnote, is fictional and labelled `DEMO / SYNTHETIC`. Skill credits are in [skills/quill/SOURCES.md](skills/quill/SOURCES.md).
+Replace `brand/brand-kit.md`, then update `brand/brand.md` and `brand/MOTION.md`, which the agents read. The demo brand, Driftnote, is fictional and labelled `DEMO / SYNTHETIC`. Skill credits are in [skills/quill/SOURCES.md](skills/quill/SOURCES.md).
 
 ## License
 

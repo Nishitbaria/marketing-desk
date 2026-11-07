@@ -13,7 +13,7 @@ An ask that says "vertical" means 9:16.
 
 ## Launch
 
-One product, one reason to care. Use the default beats in `script-writer.md`. The demo beat shows the product doing its job, using only features the creator or the brand kit named. If the launch date or link is missing, leave it out of the spoken line and ask.
+One product, one reason to care. Use the default beats in `script-writer.md`. The demo beat shows the product doing its job, using only features the creator or the brand kit named. If the launch date or link is missing, leave it out of the spoken line and list it in Open questions. If the creator asked for a fact you do not have, such as the price, write `[need: price]`.
 
 ## Explainer
 

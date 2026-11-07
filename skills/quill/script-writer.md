@@ -33,7 +33,7 @@ Other lengths scale from the nearest row, keeping the hook at 3 seconds.
 - One idea per beat.
 - Write for the ear. Read it aloud; if you stumble, rewrite it.
 - The script opens with the first hook option unless the creator picks another.
-- The CTA asks for one action. If the link is missing, write [need: CTA link] and list it in Open questions.
+- The CTA asks for one action. If the link is missing, leave it out and list it in Open questions.
 
 ## Shot list
 

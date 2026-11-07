@@ -94,7 +94,7 @@ renders/notely/notely.mp4
 0-3s: hook text
 3-10s: problem text
 10-22s: solution text
-22-30s: CTA with [need: CTA link]
+22-30s: CTA
 cc @studio-director
 @studio-keeper check render
 ```
@@ -118,10 +118,10 @@ Next: @studio-director approved render
 
 ```
 @<creator> renders/notely/notely.mp4
-approve or request changes
+reply @studio-director approve or your change
 ```
 
-**16. Creator** approves or requests changes. Only the creator approves. No agent uploads, posts or publishes.
+**16. Creator** replies `@studio-director approve` or a change. On approve, Director posts `Creator approved. Closed. Nothing published.` and stops. Only the creator approves. No agent uploads, posts or publishes.
 
 ## If a stage keeps failing
 
