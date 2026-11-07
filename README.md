@@ -118,7 +118,7 @@ Take Switch away and there is no studio. This repo has no chat app code and no o
 
 ## Set it up on Switch
 
-You need [Switch Console](https://docs.switchagents.ai/switch-rooms/getting-started/install-switch-console.md) and an agent provider you are already signed in to. The template uses the first installed of Claude Code, Codex or Cursor.
+You need [Switch Console](https://docs.switchagents.ai/switch-rooms/getting-started/install-switch-console.md) and Claude Code, signed in. Cut also needs Node.js 22+ and FFmpeg. The full list is in [SETUP.md](SETUP.md#requirements).
 
 1. Clone this repo.
 2. In Switch Console, choose **Add a server**, then **Run a server on this computer**, and finish the guided setup. Full steps are in [SETUP.md](SETUP.md).
@@ -130,6 +130,8 @@ You need [Switch Console](https://docs.switchagents.ai/switch-rooms/getting-star
 To import a new version, delete the existing `studio-*` agents first. Switch refuses a name already in use.
 
 ### Connect a chat app
+
+For Slack, follow [docs/slack-setup.md](docs/slack-setup.md). For another app:
 
 1. Set up the chat app in Switch Console.
 2. Link your chat account to your Switch user. The form offers this, and agents refuse an unlinked account.

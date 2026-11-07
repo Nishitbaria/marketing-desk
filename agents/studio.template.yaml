@@ -5,14 +5,11 @@
 # Importing asks for this repository's path and, optionally, a chat app. Only
 # the agents and their room are written here. Same shape as
 # examples/agent-templates/jq-expert.template.yaml upstream.
+# Each agent names claude directly: Switch Console on Windows cannot fill a
+# provider param, so a param would block the form there.
 version: 1
 
 params:
-  provider:
-    type: provider
-    description: The coding agent that runs each agent. The first one installed is chosen.
-    default: [claude, codex, cursor]
-    input: advanced
   machine:
     type: machine
     description: The machine the agents run on. The first online one that can run them.
@@ -36,7 +33,7 @@ agents:
     addressing: owner-agents
     auto_mode: true
     auto_approve: false
-    provider: "{provider}"
+    provider: claude
     machine: "{machine}"
     directory: "{directory}"
     instructions: |
@@ -93,7 +90,7 @@ agents:
     addressing: anyone
     auto_mode: true
     auto_approve: false
-    provider: "{provider}"
+    provider: claude
     machine: "{machine}"
     directory: "{directory}"
     instructions: |
@@ -149,7 +146,7 @@ agents:
     addressing: owner-agents
     auto_mode: true
     auto_approve: false
-    provider: "{provider}"
+    provider: claude
     machine: "{machine}"
     directory: "{directory}"
     instructions: |
@@ -207,7 +204,7 @@ agents:
     addressing: owner-agents
     auto_mode: true
     auto_approve: false
-    provider: "{provider}"
+    provider: claude
     machine: "{machine}"
     directory: "{directory}"
     instructions: |
