@@ -1,22 +1,24 @@
 ---
-title: "Stopped at the price: building a four-agent video team on Switch"
+title: "Stopped at the price: building a five-agent video team on Switch"
 published: false
-description: "Four AI agents in one chat room write and render a launch video, and stop when a fact is missing. How it works, and how to build it yourself."
+description: "Five AI agents in one chat room write, voice and render a launch video, and stop when a fact is missing. How it works, and how to build it yourself."
 tags: ai, agents, showdev, tutorial
 cover_image: https://raw.githubusercontent.com/Nishitbaria/studio-desk/main/docs/blog/cover.png
 ---
 
-*One line in a chat room, four AI agents, and a real MP4 at the end. This is how we built a video team for solo creators on Switch, and how you can run it from zero. Built for the Flip the Switch Hackathon by WeMakeDevs and DevTools Academy.*
+*One line in a chat room, five AI agents, and a real MP4 at the end. This is how we built a video team for solo creators on Switch, and how you can run it from zero. Built for the Flip the Switch Hackathon by WeMakeDevs and DevTools Academy.*
 
 **The short version**
 
-- You ask once. Director, Quill, Keeper and Cut hand the work to each other by mention, and a real MP4 comes out.
-- When a fact is missing, the chain stops and tags you. Nothing renders around a guess, and nothing publishes.
+- You ask once. Director, Quill, Voice, Cut and Keeper hand the work to each other by mention, and a real MP4 comes out.
+- When a fact is missing, the chain stops and tags you. When a render is wrong, Keeper sends it back. Nothing publishes.
 - The whole team is one YAML file. Switch Console comes with Mattermost, so you can run it without a Slack workspace.
+
+Demo video: [watch it on Loom](https://www.loom.com/share/2bd581aa44634f069d2b98b29801698e) · Live page: [one-person-studio.vercel.app](https://one-person-studio.vercel.app) · Repo: [github.com/Nishitbaria/studio-desk](https://github.com/Nishitbaria/studio-desk)
 
 {% github Nishitbaria/studio-desk %}
 
-<!-- TODO: add Nishit's Mattermost demo here with the dev.to YouTube tag. -->
+{% embed https://www.loom.com/share/2bd581aa44634f069d2b98b29801698e %}
 
 ---
 
@@ -28,12 +30,13 @@ A little later, this came back:
 
 ```text
 script passed brand check. Before we render, it still needs your input:
-- Price of Driftnote Plus: should it appear on screen, and if so what is it?
+- Price of Driftnote Plus: should it appear on screen,
+  and if so what is it?
 - Launch date: should the CTA say "out now" or a specific date?
 reply @studio-director with the answer
 ```
 
-Nobody had told the team the price, and it was not in the brand files. So four agents did the most useful thing an AI agent can do when it hits a gap in what it knows.
+Nobody had told the team the price, and it was not in the brand files. So the agents did the most useful thing an AI agent can do when it hits a gap in what it knows.
 
 They stopped.
 
@@ -59,7 +62,7 @@ So we set one rule on the first day, and every design decision after it came fro
 
 We called it **One-Person Studio**.
 
-![Your chat app connects through Switch to four agents running on your machine, which read the repo](https://raw.githubusercontent.com/Nishitbaria/studio-desk/main/docs/blog/architecture.png)
+![Your chat app connects through Switch to five agents running on your machine, which read the repo](https://raw.githubusercontent.com/Nishitbaria/studio-desk/main/docs/blog/architecture.png)
 
 ---
 
@@ -89,9 +92,9 @@ Here is the real line from that run. Yes, I typed it in Hinglish:
 
 That means "make a 30 second launch video for Driftnote Plus". Driftnote is a fictional journaling app we use as demo data.
 
-Here is the path it takes. Follow the orange line:
+This was an early run, before Voice joined, so you will see four agents below. Voice now sits between Keeper and Cut, and this is the path an ask takes today. Follow the orange line:
 
-![The chain from your ask through Director, Quill, Keeper and Cut to your approval, with an orange branch where Director stops and asks you](https://raw.githubusercontent.com/Nishitbaria/studio-desk/main/docs/blog/chain.png)
+![The chain from your ask through Director, Quill, Keeper and Cut to your approval, with Voice before Cut, and an orange branch where Director stops and asks you](https://raw.githubusercontent.com/Nishitbaria/studio-desk/main/docs/blog/chain.png)
 
 **Director** turned it into a brief and tagged Quill. It never writes or renders anything. It only routes and reports.
 
@@ -124,7 +127,45 @@ Then Director tagged me with the file, waiting for `approve` or a change. The en
 
 The result was a 30.0 second, 1080x1920 H.264 file of about 800 KB, which I confirmed myself with `ffprobe`. Nothing was published.
 
-<!-- TODO: add a screenshot of Director stopping to ask. -->
+---
+
+## The render Keeper sent back
+
+Stopping for a fact is half of it. The other half is refusing work that looks finished.
+
+By the next big run, Voice had joined the team and Cut had moved to Remotion. I asked for a launch video for this very project, in a real Switch room:
+
+```text
+@Director 30s launch video for One-Person Studio,
+and say how many creators use it
+```
+
+Director opened a new room, `video-one-person-studio-launch`, only for this video. Nobody had given the team a creator count, so the placeholder sat right there in Quill's script:
+
+![Quill's post in the Switch room, with a hook option that reads need: creator count](https://raw.githubusercontent.com/Nishitbaria/studio-desk/main/docs/blog/run-need.png)
+
+Then Keeper checked the render. It did not read Cut's report and say fine. It measured the MP4 itself, and it came back with FIX and four exact problems:
+
+![Keeper's FIX in the room, listing four timed issues, followed by Director's status and Cut's re-render](https://raw.githubusercontent.com/Nishitbaria/studio-desk/main/docs/blog/run-fix.png)
+
+Here is what it found, in short:
+
+| When | Problem Keeper found | The rule behind it |
+| --- | --- | --- |
+| 24.4s to 30s | Four items in the accent color, from pixels sampled in the MP4 | One accent per frame |
+| 22.3s to 23.8s | The wordmark climbs in as an outline | Text comes in with a soft fade |
+| 0s to 10s | The first two beats share one layout | No two beats share a layout |
+| 10s to 22s | Letter spacing of -0.03em on a title | Titles use -0.02em |
+
+Each issue also named the file and the value to change, so Cut had nothing to guess.
+
+Director posted one line, `render FIX 1 of 2`. That count matters: a piece gets two FIX loops, and after that Director asks the person. Agents cannot argue with each other forever.
+
+Cut applied all four fixes and rendered again: 30.02s, 1080x1920, with 4 of 4 voice clips placed. Keeper measured the new file and replied PASS.
+
+![Keeper's PASS in the room, then Director tagging the creator with the MP4 path and waiting](https://raw.githubusercontent.com/Nishitbaria/studio-desk/main/docs/blog/run-pass.png)
+
+Look at the last message. PASS is not approval. Director tags the person with the file and waits. From my ask at 10:10 PM to that tag at 10:24 PM took 14 minutes, and nothing was published.
 
 ---
 
@@ -140,8 +181,6 @@ An agent that always stops is as useless as one that never does. So we ran asks 
 
 The first two stopped for different reasons, and the third did not need to stop in the main room at all.
 
-<!-- TODO: add the LinkIo launch run from Nishit's demo: what it stopped for, length, size and audio. -->
-
 ---
 
 ## The decision that made everything else simple
@@ -153,10 +192,12 @@ There is no script deciding who runs next, no queue and no state machine of ours
 The routing lives in plain lines in Keeper's instructions:
 
 ```text
-- PASS on a script with no [need: ...]: @studio-cut render it
-- PASS on a script with a [need: ...]: @studio-director needs the creator's input
+- PASS on a script with no [need: ...]: @studio-voice make the voice
+- PASS on a script with a [need: ...]:
+  @studio-director needs the creator's input
 - PASS on a render: @studio-director approved render
 - FIX on a script: @studio-quill please revise
+- FIX on a render: @studio-cut please re-render
 ```
 
 Look at the second line. That single branch is the stop from the start of this post. It is one sentence of text, and because it runs in a shared room, I can read every decision as it happens.
@@ -176,7 +217,7 @@ Each agent is one block in the template:
     You are Keeper, the brand guardian for a solo creator.
 ```
 
-**Take Switch out, and what breaks?** Everything that matters. The agents would be four terminal windows, and I would be pasting a script from one to the next. The stop would have nowhere to happen, because no agent could tag me. And the reasoning would vanish when a session closed. The video engine could be swapped. In fact, we did swap it. The room could not be replaced.
+**Take Switch out, and what breaks?** Everything that matters. The agents would be five terminal windows, and I would be pasting a script from one to the next. The stop would have nowhere to happen, because no agent could tag me. And the reasoning would vanish when a session closed. The video engine could be swapped. In fact, we did swap it. The room could not be replaced.
 
 ---
 
@@ -190,6 +231,7 @@ Switch Console comes with Mattermost, a free chat app, so this is the simplest p
 - Docker, which runs Mattermost
 - [Claude Code](https://code.claude.com/docs/en/quickstart), signed in
 - Node.js 22 or newer
+- Optional: Kokoro for the best voice, see `SETUP.md`. Without it, Voice falls back to the macOS voice
 
 Agents use the tools installed on your computer, so install these first. Console reads your PATH once, when it starts.
 
@@ -212,7 +254,7 @@ Agents use the tools installed on your computer, so install these first. Console
 | Directory | The full path to your clone. Replace anything pre-filled, and check every letter |
 | Messaging app | Your Mattermost connection |
 
-*Check:* all four agents introduce themselves in the new channel, and `!agents-status` shows them live.
+*Check:* all five agents introduce themselves in the new channel, and `!agents-status` shows them live.
 
 **Step 5: Ask for a video.** Tag `@studio-director` in every message. Mattermost has no Switch slash commands, so room commands use `!`, and the `!` must be the first thing in the message.
 
@@ -236,11 +278,13 @@ A small template in the repo defines each room:
 room:
   name: "video-{video}"
   bridge: "{bridge}"
-  agents: [studio-director, studio-quill, studio-cut, studio-keeper]
+  agents: [studio-director, studio-quill, studio-voice,
+           studio-cut, studio-keeper]
   users: ["{$creator}"]
   instructions: |
     Video room for {video}. This room makes that one video.
-    Cut: use {video} as the slug, so the video builds in renders/{video}/.
+    Voice and Cut: use {video} as the slug. Voice writes to
+    renders/{video}-voice/ and the video builds in renders/{video}/.
 
 kickoff: |
   @studio-director this is the video room for {video}.
@@ -270,8 +314,8 @@ Our worst case is a bad draft video on a local disk. Instructions alone are an a
 
 ## Honest limits
 
-- **There is no voiceover.** Cut adds background music and sound effects, but nobody speaks.
-- **The run in this post used our first render engine, HyperFrames.** Cut has since moved to Remotion, with sound and transitions.
+- **The voice depends on your machine.** Voice uses Kokoro if you installed it, then the macOS voice, then no audio at all. It says in the room which one it used, and a missing tool never stops the chain.
+- **The Driftnote run used our first render engine, HyperFrames.** Cut has since moved to Remotion, and the One-Person Studio run used that.
 - **It runs on Claude Code only.** The template names that provider directly.
 - **Finished rooms stay open.** You archive them yourself.
 - **Your machine has to stay on.** Agents run on your computer.
@@ -291,7 +335,7 @@ Our worst case is a bad draft video on a local disk. Instructions alone are an a
 ## What's next
 
 - Post the final MP4 into the room, while keeping the ban on publishing anywhere else
-- Add a voiceover
+- Build Reel, a planned agent for visuals
 - Store each script as a room document, so `!list-documents` shows the work
 
 ---
@@ -306,6 +350,8 @@ If you are building a team of agents, where did you draw the line between what t
 
 ## Links
 
+- Demo video: [loom.com/share/2bd581aa44634f069d2b98b29801698e](https://www.loom.com/share/2bd581aa44634f069d2b98b29801698e)
+- Live page: [one-person-studio.vercel.app](https://one-person-studio.vercel.app)
 - Repo: [github.com/Nishitbaria/studio-desk](https://github.com/Nishitbaria/studio-desk)
 - Switch: [github.com/sandbox-quantum/switch](https://github.com/sandbox-quantum/switch)
 - Switch quickstart: [docs.switchagents.ai](https://docs.switchagents.ai/switch-rooms/getting-started)

@@ -14,7 +14,7 @@ If you make videos alone, you are the writer, the editor and the person checking
 
 Built on [Switch](https://docs.switchagents.ai) for the WeMakeDevs "Flip the Switch" hackathon.
 
-<!-- Demo video link goes here: **▶️ [Watch the demo](URL)** -->
+**▶️ [Watch the demo](https://www.loom.com/share/2bd581aa44634f069d2b98b29801698e)** · [Live page](https://one-person-studio.vercel.app)
 
 ### At a glance
 

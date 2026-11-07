@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="./agents/director.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>One-Person Studio</title>
+    <meta name="description" content="A video team for solo creators that lives in your chat. Send one line. Five agents write, voice, render and check it. You approve the final cut." />
+    <script>
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.classList.remove("dark")
+        }
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
