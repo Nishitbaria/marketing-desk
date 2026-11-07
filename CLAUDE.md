@@ -4,7 +4,7 @@ Video team for solo creators on Switch, for the WeMakeDevs Flip the Switch hacka
 
 ## Team
 
-`agents/studio.template.yaml` is the source of truth for every agent, the room and the kickoff. Import it in Switch Console to apply a change.
+`agents/studio.template.yaml` is the source of truth for every agent, the main room and its kickoff. Import it in Switch Console to apply a change. `agents/video-room.template.yaml` defines each video room. Director reads it from the repo, so it needs no import.
 
 | Agent | Job | Skills |
 | --- | --- | --- |
@@ -13,7 +13,7 @@ Video team for solo creators on Switch, for the WeMakeDevs Flip the Switch hacka
 | `studio-cut` | Renders the MP4 into `renders/<slug>/` | `skills/cut/` |
 | `studio-keeper` | Checks scripts and renders, replies PASS or FIX | `skills/keeper/` |
 
-Flow: creator asks Director, Quill writes, Keeper checks, Cut renders, Keeper checks, Director tags the creator. Reel is planned and not built.
+Flow: creator asks Director in the main room, Director opens a video room from `agents/video-room.template.yaml`, then Quill writes, Keeper checks, Cut renders, Keeper checks and Director tags the creator there. Reel is planned and not built.
 
 ## Rules
 

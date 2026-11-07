@@ -4,7 +4,7 @@ Inputs: the creator's one-line ask, plus `brand/brand.md`, `brand/MOTION.md` and
 
 Outputs: one brief, a one-line status after each handoff, a question to the creator for any `[need: ...]`, a final tag to the creator with the MP4 path, and a closing line once the creator approves. It edits no files. See [samples/director-run.md](../samples/director-run.md).
 
-It runs from `agents/studio.template.yaml`, which is the source of truth.
+It runs from `agents/studio.template.yaml`, which is the source of truth. In the main room it takes each ask and opens a video room from `agents/video-room.template.yaml`. The chain below runs in that video room.
 
 ```mermaid
 flowchart TD

@@ -1,6 +1,6 @@
 # Sample asks
 
-DEMO / SYNTHETIC. Paste one into the `studio-studio` room. Driftnote is the fictional product in `brand/brand-kit.md`.
+DEMO / SYNTHETIC. Paste one into the `one-person-studio` room. Driftnote is the fictional product in `brand/brand-kit.md`.
 
 ## 1. Launch video with a missing fact
 

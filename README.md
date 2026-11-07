@@ -61,6 +61,8 @@ flowchart TD
   D2 -->|MP4 path, approve or your change| C
 ```
 
+You ask Director in the main room, and it opens a new room for that video from [agents/video-room.template.yaml](agents/video-room.template.yaml). The whole flow above runs in that room, so each video keeps its own history and its own `renders/<video>/` folder. A new video gets a new room, and you archive finished rooms yourself.
+
 ## What it looks like
 
 <!-- Screenshots go here: the room in Slack or Discord, and a frame from a rendered video. -->
@@ -118,20 +120,18 @@ Take Switch away and there is no studio. This repo has no chat app code and no o
 
 ## Set it up on Switch
 
-You need [Switch Console](https://docs.switchagents.ai/switch-rooms/getting-started/install-switch-console.md) and Claude Code, signed in. Cut also needs Node.js 22+ and FFmpeg. The full list is in [SETUP.md](SETUP.md#requirements).
+You need [Switch Console](https://docs.switchagents.ai/switch-rooms/getting-started/install-switch-console.md) and Claude Code, signed in. Cut also needs Node.js 22+. The full list is in [SETUP.md](SETUP.md#requirements).
 
 1. Clone this repo.
 2. In Switch Console, choose **Add a server**, then **Run a server on this computer**, and finish the guided setup. Full steps are in [SETUP.md](SETUP.md).
 3. Check that **Gateway > Machines** shows this computer online.
 4. Open **Templates**, choose **Import template**, paste `agents/studio.template.yaml`, click **Import**, then **Save**.
 5. Choose **Use template**. Set `directory` to this repo's absolute path. Set `bridge` to your chat app's display name, or leave it empty for the server's default app.
-6. Choose **Create agents and room**. Director, Quill, Cut and Keeper each say hello in the `studio-studio` room.
+6. Choose **Create agents and room**. Director, Quill, Cut and Keeper each say hello in the `one-person-studio` room.
 
 To import a new version, delete the existing `studio-*` agents first. Switch refuses a name already in use.
 
 ### Connect a chat app
-
-For Slack, follow [docs/slack-setup.md](docs/slack-setup.md). For another app:
 
 1. Set up the chat app in Switch Console.
 2. Link your chat account to your Switch user. The form offers this, and agents refuse an unlinked account.

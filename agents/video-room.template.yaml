@@ -1,0 +1,36 @@
+# One room for one video. Director reads this file and passes it to
+# create_room_from_yaml for each ask, so there is nothing to import in Switch
+# Console. The agents must already exist: studio.template.yaml creates them.
+version: 1
+
+params:
+  video:
+    type: string
+    description: Short lowercase name for this video, such as notely-launch.
+  ask:
+    type: string
+    description: The creator's ask, word for word.
+  bridge:
+    type: bridge
+    description: The chat app of the room the ask came from.
+    required: false
+
+room:
+  name: "video-{video}"
+  description: "Makes one video: {video}"
+  bridge: "{bridge}"
+  agents: [studio-director, studio-quill, studio-cut, studio-keeper]
+  users: ["{$creator}"]
+  instructions: |
+    Video room for {video}. This room makes that one video.
+    Cut: use {video} as the slug, so the video builds in renders/{video}/.
+    Post in English. The creator talks to @studio-director.
+    A mention wakes that agent, so use one only for a real handoff.
+    Before you start, use read_context to find the latest work.
+    If a step fails, post the exact error. Never claim unfinished work.
+    Only the creator approves. Agents never publish.
+
+kickoff: |
+  @studio-director this is the video room for {video}.
+  The creator's ask: {ask}
+  Post the brief and start the chain.
