@@ -6,7 +6,7 @@ Switch does not live in this repo. Switch Console, a desktop app, runs the serve
 2. In Console, choose **Add a server**, then **Run a server on this computer** ([add a server](https://docs.switchagents.ai/switch-rooms/getting-started/add-a-server.md)).
 3. Finish the guided setup with an agent provider you are already signed in to, such as Claude Code ([getting started](https://docs.switchagents.ai/switch-rooms/getting-started.md)).
 4. Check **Gateway > Machines** shows this computer online. If it does not, create one agent by hand under **Agents** on this computer; that enrolls the machine.
-5. In **Templates**, import `agents/studio.template.yaml` and choose **Use template**. Set `directory` to this repo's absolute path. Set `bridge` to your chat app's display name, or leave it empty for the server's default app.
+5. Link your chat account under **Identities**. Then in **Templates**, import `agents/studio.template.yaml` and choose **Use template**. Set `directory` to this repo's absolute path. Set `bridge` to your chat app's display name, or leave it empty for the server's default app.
 6. Open the `studio-studio` room. Each agent says hello in one line.
 7. Paste an ask from [samples/asks.md](samples/asks.md).
 

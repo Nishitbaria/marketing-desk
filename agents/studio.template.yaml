@@ -26,6 +26,7 @@ params:
   bridge:
     type: bridge
     description: The chat app this room lives in. Leave empty for the server's default app.
+    default: [$first]
     required: false
 
 agents:
