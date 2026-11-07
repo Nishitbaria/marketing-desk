@@ -1,54 +1,49 @@
 # Brand
 
-Written from https://linkio.site and checked by the creator.
+Written from https://github.com/Nishitbaria/studio-desk and this repo's README, and set by the creator.
 
 ## Name and what we do
-LinkIo. Bio pages, short links and click analytics in one place.
+One-Person Studio. A video team for solo creators that lives in your chat. You send one line, and five AI agents write, check, voice and render the video. You approve the final cut.
 
 ## Audience
-Creators. "Perfect for creators who want to organize their online presence."
+Solo creators who make videos alone and are the writer, the editor and the person checking their own work.
 
 ## What we promote (with the real link)
-LinkIo, start for free. Link: https://linkio.site/signup
-Price: Free $0 forever. Pro $8 per month or $72 a year. Free during early access.
+One-Person Studio, free and open source under the MIT license. Link: https://github.com/Nishitbaria/studio-desk
+Price: do not state one.
 
 ## The feeling
-Warm, personal, about your audience.
+Calm, sharp, in control. A small, trustworthy crew working quietly while you stay in charge. Confident, never loud.
 
 ## Voice
 - Say "you".
-- Use: "where attention turns into action", "a page worth visiting", "looks like you".
-- End every video on: "Your audience is clicking. Start counting."
-- Words to avoid: ASK ME.
+- Short plain sentences. Show the work, do not hype it.
+- Use: "send one line", "the team does not guess", "nothing ships without you".
+- End every video on: "Send one line. Get a video."
+- Words to avoid: "revolutionary", "game changer", "magic", "effortless", "10x", "supercharge", "replace your team".
 
 ## Assets
-- Colours: Background `#FFFFFF`, Text `#0A0A0A`, Accent `#000000`, Secondary: ASK ME.
-- Fonts: Geist for titles and body.
-- Logo: https://linkio.site/brand/wordmark-light.png
-- Logo files: ASK ME.
+- Colours: Background `#0B0D12`, Text `#F5F3EE`, Accent `#7CFFB2`, Secondary `#8A8FA8`.
+- Fonts: Geist for titles, Inter for body.
+- Logo: `brand/screens/logo.png`, transparent, for dark backgrounds only.
 
 ## Allowed facts
-- One link. Every click counted.
-- A bio page that looks like you, short links you can post anywhere, and analytics that show where every click came from.
-- Pick a theme, tune the details, and publish in minutes.
-- Classic list or a Hero layout with a big cover.
-- Every link gets a short linkio.site/l/ URL that tracks clicks wherever you post it
-- Download a QR code for any link and take it offline.
-- Protect a link or let it expire on a date you choose.
-- Country, device, browser, referrer and UTM campaign.
-- Top links and week-over-week change, in your inbox.
-- No hidden fees. Cancel anytime.
-- Unlimited links and short URLs
-- Your public bio page with 5 themes
-- 30 days of click analytics
-- Analytics beyond 30 days, custom ranges and CSV export
-- No LinkIo branding, plus a Pro badge
-- Or $72 a year. 7-day free trial.
-- custom domains are planned for a future paid plan
-- Set up your page in a couple of minutes.
-- Free during early access, no credit card required.
+- One-Person Studio is a video team for solo creators that lives in your chat.
+- You send one line and five AI agents take it from there.
+- The agents are Director, Quill, Voice, Cut and Keeper.
+- You talk only to Director, which briefs the team and reports status.
+- Quill writes the script. Keeper checks scripts and renders against your brand. Voice speaks the script. Cut renders the MP4.
+- If a fact is missing, it becomes a placeholder and the team stops to ask you.
+- Keeper replies PASS or FIX, and a FIX goes back to be redone.
+- Every handoff is a plain message you can read in the room.
+- Agents never upload or post. Only you approve a video.
+- It runs on Switch, in your chat app, on your own computer.
+- The whole team is one template file.
+- It is open source under the MIT license.
 
 ## Never
-- Promise outcomes the site does not promise.
+- Promise views, growth, sales or any other outcome.
 - Use guilt or false urgency.
 - State a price, date, user count or other number that is not listed above.
+- Say the video is finished or published without the creator's approval.
+- Show sample data or a made-up product screen as if it were real.

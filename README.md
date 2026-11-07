@@ -8,7 +8,7 @@
 
 # One-Person Studio
 
-**A video team for solo creators that lives in your chat. You send one line, and four AI agents write it, render it and check it. You approve the final cut.**
+**A video team for solo creators that lives in your chat. You send one line, and five AI agents write it, voice it, render it and check it. You approve the final cut.**
 
 If you make videos alone, you are the writer, the editor and the person checking your own work at 2am. One-Person Studio gives you a small team instead. You drop one line in a Switch room, something like "make a 30s launch video for Notely", and five agents take it from there. If a fact is missing, the team stops and asks you instead of guessing, and nothing is final until you approve it.
 
