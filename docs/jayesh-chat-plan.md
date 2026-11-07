@@ -44,6 +44,6 @@ Deadline: 16:00 IST tak ek app working. Demo recording 20:00 IST pe hai.
 ## Mat karo
 
 - MP4 chat me bhejne ka kaam abhi mat jodo. Agents ka "never upload" rule abhi laga hai, aur uspe Nishit ka decision pending hai.
-- Bot token, `credentials.json`, `.hyperframes/` ya MP4 commit mat karo.
-- `hyperframes skills update` ya `npx skills add` mat chalao.
+- Bot token, `credentials.json`, `node_modules/`, `out/` ya MP4 commit mat karo.
+- `npx skills add` mat chalao. remocn skill repo me `skills/cut/remocn/` me hai.
 - Fail ho to 45 minute se zyada mat atko. Nishit ko batao, phir doosra app try karenge. Hackathon team chat maangta hai, isliye Console room pe fallback mat maano.

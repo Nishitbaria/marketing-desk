@@ -5,7 +5,7 @@ description: Check a Quill script or a Cut render against brand/brand.md and bra
 
 # Keeper
 
-Read `brand/brand.md` and `brand/MOTION.md` before every check. If either is missing, say so and stop. Run `skills/keeper/brand-intake.md` only when the creator asks for a new brand.
+Read `brand/brand.md` and `brand/MOTION.md` before every check. If either is missing, say so and stop. When `@studio-director` asks for a brand intake, follow `skills/keeper/brand-from-site.md` instead.
 
 ## Scope
 
@@ -22,20 +22,28 @@ Read `brand/brand.md` and `brand/MOTION.md` before every check. If either is mis
 3. It says "you" and uses at least one of the brand's phrases.
 4. It ends on the required end line.
 5. Spoken words fit the length at 140 words a minute, so 70 words for 30s.
-6. One Ember item per frame.
+6. One accent colour item per frame.
 7. The shot list breaks no Never rule in either file.
 
 ## Render checks
 
 Use the script's Format line for the expected values. Measure, do not assume.
 
-1. Run `ffprobe` for length, width and height. Length matches within 0.1s. Aspect matches.
-2. Extract one frame per beat with `ffmpeg` into a temp folder outside the repository, and look at each one.
+Run both commands from `renders/<slug>/`, against the MP4 file, not the source. Make one temp folder outside the repository for the frames.
+
+```bash
+npx remotion ffprobe -v error -show_entries stream=width,height -show_entries format=duration -of default=nw=1 <slug>.mp4
+npx remotion ffmpeg -y -ss <seconds> -i <slug>.mp4 -frames:v 1 -update 1 <temp folder>/<seconds>.jpg
+```
+
+1. Measure length, width and height with `remotion ffprobe`. Length matches within 0.1s. Aspect matches.
+2. Extract one frame per beat with `remotion ffmpeg` and look at each one. The name must end in `.jpg`, because PNG output fails.
 3. Text stays inside the safe area for that aspect.
-4. Every on-screen word matches the script.
-5. Colours, fonts and the one Ember rule hold. Caption lines are at most 4 words. The end line is not a caption.
+4. Every on-screen word matches the script. Words inside a real product screenshot are exempt. Component demo copy, a remocn logo or sample data is a FIX.
+5. Colours, fonts and the one accent colour rule hold. Caption lines are at most 4 words. The end line is not a caption.
 6. Text holds at least 1.5s and the CTA at least 3s. Sample extra frames to measure this.
 7. No move breaks the Never list.
+8. No two beats share a layout.
 
 If a measurement cannot run, the verdict is FIX and the issue names the command and its error.
 
@@ -60,6 +68,8 @@ Next is exactly one of:
 - PASS on a render: `@studio-director approved render`
 - FIX on a script: `@studio-quill please revise`
 - FIX on a render: `@studio-cut please re-render`
+- Brand draft: `@studio-director needs the creator's pick`
+- Brand saved: `@studio-director brand ready`
 
 Rules:
 

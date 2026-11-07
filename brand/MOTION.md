@@ -1,6 +1,6 @@
 # MOTION
 
-Read before animating or checking anything. Written with `skills/keeper/brand-intake.md`. No reference frames exist yet, so this comes from `brand/brand-kit.md`, `skills/quill/formats.md` and `skills/cut/launch-video.md`. ASK ME marks what those files do not say.
+Read before animating or checking anything. Written with `skills/keeper/brand-intake.md`. No reference frames exist yet, so this comes from `brand/brand-kit.md`, `skills/quill/formats.md` and `skills/cut/remotion.md`. ASK ME marks what those files do not say.
 
 ## 1. Colours
 - Night navy `#1B1F3B`: background of almost every frame.
@@ -33,10 +33,10 @@ A render must match the length and aspect in the script's Format line. Hard maxi
 
 ## 4. Movement
 - Slow push-ins and soft fades.
-- Text comes in with a soft fade. The hook may already be on screen at t=0, because `hyperframes check` needs a visible first frame.
+- Text comes in with a soft fade. The hook may already be on screen at t=0.
 - Typing appears only inside a product input.
 - Small position moves, fade length and easing curve: ASK ME.
-- Frame rate: 30fps, the HyperFrames render used so far. Brand preference: ASK ME.
+- Frame rate: 30fps, the Remotion and remocn standard. Brand preference: ASK ME.
 
 ## 5. Texture and finish
 Flat colour on night navy. Grain and other texture: ASK ME.

@@ -12,7 +12,7 @@ Switch does not live in this repo. Switch Console, a desktop app, runs the serve
 
 ## Make it yours
 
-Edit [brand/brand-kit.md](brand/brand-kit.md): your product, the facts agents may use, your voice and your banned words. Then update `brand/brand.md` and `brand/MOTION.md`, which the agents re-read on every ask.
+Send `@studio-director brand intake https://your-site.com`, check the draft and pick a voice. Keeper saves the brand files. Keeper reads the site with the [Firecrawl CLI](https://docs.firecrawl.dev/sdks/cli) when you have it: run `npm i -g firecrawl-cli`, then `firecrawl login`. A scrape uses your Firecrawl credits. Without it, Keeper uses `skills/keeper/extract-site.py`, which reads less and cannot check contrast. With no website, edit [brand/brand-kit.md](brand/brand-kit.md): your product, the facts agents may use, your voice and your banned words. Then update `brand/brand.md` and `brand/MOTION.md`, which the agents re-read on every ask.
 
 ## Notes
 

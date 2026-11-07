@@ -22,8 +22,8 @@ Flow: creator asks Director, Quill writes, Keeper checks, Cut renders, Keeper ch
 - `brand/brand-kit.md` is demo data for the fictional Driftnote. `brand/brand.md` and `brand/MOTION.md` come from it. Read them before any visual or script work.
 - Template files take only fields documented in Switch's `docs/TEMPLATES.md`. Do not invent fields.
 - Keep `auto_approve: false` on every agent. A template has no include, so all agents live in one file.
-- HyperFrames is pinned to `hyperframes@0.9.19`, the only render engine. Do not add Remotion. Do not run `hyperframes skills update` or `npx skills add`.
-- Commit no secrets, no `.hyperframes/`, and no MP4 except the one Notely demo.
+- Remotion is the only render engine, with remocn components. Pins are `create-video@4.0.541` and `shadcn@4.23.0`. New renders never use HyperFrames. Do not run `npx skills add`, the remocn skill is vendored in `skills/cut/remocn/`.
+- Commit no secrets, no `.hyperframes/`, no `out/`, and no MP4 except the one Notely demo.
 - Do not read `~/Library/Application Support/switchdash/control-api.json` or any `credentials.json`.
 - No em dashes in any file, script or reply.
 
@@ -46,10 +46,10 @@ PY="$HOME/Library/Application Support/switchdash/local-switch-server/native/swit
 Run in `renders/<slug>/` after changing a composition:
 
 ```bash
-npx --yes hyperframes@0.9.19 check
+npx tsc --noEmit
 ```
 
-Then look at one frame per beat. A passing check does not show how a frame looks. Report a render only after `ffprobe` confirms it.
+Then look at one frame per beat. A passing check does not show how a frame looks. Report a render only after `npx remotion ffprobe` confirms it.
 
 ## Known issues
 

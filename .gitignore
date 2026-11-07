@@ -17,3 +17,6 @@ __pycache__/
 
 # Logs
 *.log
+
+# Scraped pages from brand intake
+.firecrawl/

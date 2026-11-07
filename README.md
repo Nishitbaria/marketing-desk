@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/built%20on-Switch-1a1a1a" alt="built on Switch">
-  <img src="https://img.shields.io/badge/renders%20with-HyperFrames-1a1a1a" alt="renders with HyperFrames">
+  <img src="https://img.shields.io/badge/renders%20with-Remotion-1a1a1a" alt="renders with Remotion">
   <img src="https://img.shields.io/badge/license-MIT-1a1a1a" alt="MIT license">
 </p>
 
@@ -31,7 +31,7 @@ Built on [Switch](https://docs.switchagents.ai) for the WeMakeDevs "Flip the Swi
 | --- | --- | --- | --- |
 | **Director** `studio-director` | Leads the team. The only agent you talk to | A brief, a one-line status after each handoff, and a tag to you with the MP4 path | [skills/director/](skills/director/) |
 | **Quill** `studio-quill` | Writes every word in the video | Hook options, a timestamped script, a shot list and open questions | [skills/quill/](skills/quill/) |
-| **Cut** `studio-cut` | Renders the script with HyperFrames | An MP4 under `renders/<slug>/`, measured with `ffprobe` | [skills/cut/](skills/cut/) |
+| **Cut** `studio-cut` | Renders the script with Remotion and remocn components | An MP4 under `renders/<slug>/`, measured with `ffprobe` | [skills/cut/](skills/cut/) |
 | **Keeper** `studio-keeper` | Checks scripts and renders against your brand | PASS or FIX with up to 5 exact fixes | [skills/keeper/](skills/keeper/) |
 
 **Director** reads your ask, picks launch, explainer or faceless, posts the brief and tags Quill. It posts a one-line status after each handoff and allows 2 FIX loops per stage before it asks you. If a script still holds a `[need: ...]`, it stops and asks you for the fact.
@@ -148,7 +148,9 @@ Driftnote Plus has no price in the brand files, so this one passes when the scri
 
 ## Make it yours
 
-Replace `brand/brand-kit.md` with your product, voice and banned words, then update `brand/brand.md` and `brand/MOTION.md`, which the agents read on every ask. The demo brand, Driftnote, is fictional and labelled `DEMO / SYNTHETIC`. Skill credits are in [skills/quill/SOURCES.md](skills/quill/SOURCES.md).
+Send `@studio-director brand intake https://your-site.com`. Keeper reads the site with Firecrawl, drops any value that does not hold up, checks each quote against the page, posts a draft with 3 voice options, you pick one, and it writes `brand/brand.md` and `brand/MOTION.md`. Nothing is saved before you pick.
+
+No website? Replace `brand/brand-kit.md` with your product, voice and banned words, then update `brand/brand.md` and `brand/MOTION.md`, which the agents read on every ask. The demo brand, Driftnote, is fictional and labelled `DEMO / SYNTHETIC`. Skill credits are in [skills/quill/SOURCES.md](skills/quill/SOURCES.md).
 
 ## What's in the repo
 

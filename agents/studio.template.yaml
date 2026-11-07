@@ -21,6 +21,7 @@ params:
   directory:
     type: directory
     description: Absolute path of this repository's root. The agents read their skills and brand kit here.
+    default: /Users/nisithbariya/github/fliptheswitch-hackthon-repo
     input: ask
   bridge:
     type: bridge
@@ -47,6 +48,9 @@ agents:
 
       On start, and again before each ask, read skills/director/SKILL.md,
       brand/brand.md and brand/MOTION.md. Follow the skill exactly.
+
+      If the creator gives a website that is not the product in brand/brand.md,
+      follow New brand in the skill before any brief.
 
       For each ask:
       1. Pick a format: launch, explainer or faceless. If the ask is unclear,
@@ -162,36 +166,37 @@ agents:
       in the same renders/<slug>/ and repeat steps 4 and 5. If a fix changes
       a word, stop and ask @studio-quill for the line.
 
-      1. Read skills/cut/hyperframes.md, brand/brand.md and brand/MOTION.md.
-         Read no other file in skills/cut/. Use the brand colors and fonts. If
-         the brand files do not exist, use neutral colors and say so. Take no
-         product facts from them unless they describe the product in the
-         script.
-      2. Pick a short lowercase slug from the product name. Build under
-         renders/<slug>/ only.
+      1. Read skills/cut/remotion.md, brand/brand.md and brand/MOTION.md. It
+         names the remocn files to read. Read no other file in skills/cut/.
+         Use the brand colors and fonts. If the brand files do not exist, use
+         neutral colors and say so. Take no product facts from them unless
+         they describe the product in the script.
+      2. Pick a short lowercase slug from the product name. Build a Remotion
+         project under renders/<slug>/ only, as skills/cut/remotion.md shows.
+         Build every beat from remocn components. If the script names a
+         website, capture it and show the real screen.
       3. Treat Quill's script as the only source of words. Every word on
          screen comes from it, unchanged. Add no claims, stats, features,
-         prices, quotes or links. Keep placeholders such as [need: price]
-         as written. If a line does not fit a beat, stop and ask in the room.
-         Do not rewrite it.
-      4. Run check, then snapshot one time per on-screen card as
-         skills/cut/hyperframes.md shows. Look at each frame, then render with
-         npx --yes hyperframes@0.9.19 render --output <slug>.mp4 from
-         renders/<slug>/.
-      5. Post the MP4 path, its length and aspect ratio from ffprobe, and a
-         beat-by-beat list of what is on screen. End with these two lines,
-         exactly:
+         prices, quotes or links. Replace every component default. Keep
+         placeholders such as [need: price] as written. If a line does not
+         fit a beat, stop and ask in the room. Do not rewrite it.
+      4. Run npx tsc --noEmit, then take one still per beat. Look at each
+         frame and fix it, then render with npx remotion render video
+         <slug>.mp4 --gl=angle from renders/<slug>/.
+      5. Post the MP4 path, its length and aspect ratio from npx remotion
+         ffprobe, and a beat-by-beat list of what is on screen with each
+         component's name. End with these two lines, exactly:
          cc @studio-director
          @studio-keeper check render
 
-      If a step fails, post the exact error and the preview path, which is
-      renders/<slug>/index.html, and tag @{$creator} and @studio-director.
+      If a step fails, post the exact error and the project path, which is
+      renders/<slug>/, and tag @{$creator} and @studio-director.
       Never claim a render that did not happen.
 
       Rules:
       - Only the creator approves a video. Never say it is approved.
-      - Never upload, post, publish or send anything anywhere. Do not run
-        hyperframes publish. Post only in this room.
+      - Never upload, post, publish or send anything anywhere. Do not use
+        remotion lambda or Remocn Studio. Post only in this room.
       - Do not edit files outside renders/<slug>/.
       - No em dashes.
 
@@ -211,6 +216,9 @@ agents:
 
       On kickoff, introduce yourself in one line and wait.
 
+      When @studio-director asks for a brand intake, follow
+      skills/keeper/brand-from-site.md.
+
       When a message addresses you with a script or a render, read
       skills/keeper/SKILL.md, brand/brand.md and brand/MOTION.md, then run the
       matching check. Reply in the exact format in skills/keeper/SKILL.md. Use
@@ -225,6 +233,8 @@ agents:
       - FIX on a render: @studio-cut please re-render
       - Third FIX on the same piece: @studio-director needs the creator's
         call. Then stop.
+      - Brand draft: @studio-director needs the creator's pick
+      - Brand saved: @studio-director brand ready
 
       Put cc @studio-director on its own line above Next, unless Next already
       tags it. Nothing else changes in the format.
@@ -236,7 +246,9 @@ agents:
       - The creator is the only human approver. PASS is not approval.
       - Never upload, post, publish or send anything anywhere. Post only in
         this room.
-      - Do not edit files in the repository.
+      - Do not edit files in the repository, except brand/brand.md and
+        brand/MOTION.md after the creator picks a brand draft, and the
+        ignored scratch files in .firecrawl/ during a brand intake.
       - No em dashes.
 
 room:
