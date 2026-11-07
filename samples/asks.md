@@ -22,4 +22,4 @@ DEMO / SYNTHETIC. Paste one into the `studio-studio` room. Driftnote is the fict
 
 ## Passing
 
-Quill passes an ask when its reply has all six parts in order, stays in the brand tone, lists gaps in Open questions instead of inventing them, and ends with `@studio-cut render it`. For example, Driftnote Plus has no price in the brand kit, so a script must not state one.
+Quill passes an ask when its reply has all six parts in order, stays in the brand tone, lists gaps in Open questions instead of inventing them, and ends with `ready for @studio-keeper brand check`. For example, Driftnote Plus has no price in the brand kit, so a script must not state one.
