@@ -8,11 +8,12 @@ Video team for solo creators on Switch, for the WeMakeDevs Flip the Switch hacka
 
 | Agent | Job | Skills |
 | --- | --- | --- |
+| `studio-director` | Leads the team, the only agent the creator talks to | `skills/director/` |
 | `studio-quill` | Writes the script | `skills/quill/` |
 | `studio-cut` | Renders the MP4 into `renders/<slug>/` | `skills/cut/` |
 | `studio-keeper` | Checks scripts and renders, replies PASS or FIX | `skills/keeper/` |
 
-Flow: creator asks, Quill writes, Keeper checks, Cut renders, Keeper checks, Keeper tags the creator. Reel is planned and not built.
+Flow: creator asks Director, Quill writes, Keeper checks, Cut renders, Keeper checks, Director tags the creator. Reel is planned and not built.
 
 ## Rules
 
