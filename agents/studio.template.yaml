@@ -18,7 +18,6 @@ params:
   directory:
     type: directory
     description: Absolute path of this repository's root. The agents read their skills and brand kit here.
-    default: /Users/nisithbariya/github/fliptheswitch-hackthon-repo
     input: ask
   bridge:
     type: bridge
