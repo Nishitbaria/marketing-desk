@@ -45,10 +45,9 @@ These are the only product claims allowed. Anything else is `[need: ...]`.
 
 ## Voice
 
-- Three words: calm, honest, a little funny.
+- Tone: calm, honest, a little funny.
 - Talk to one person, at night, at a low volume.
 - Phrases we use: "say it out loud", "your week, written down", "no streaks, no guilt".
-- Never say: "revolutionary", "game changer", "unlock", "supercharge", "10x", "AI-powered" as a headline, any health or therapy claim, any number we do not have.
 - Sample line that sounds right: "You don't need a new habit. You need one minute and a pillow."
 
 ## Colors
@@ -74,6 +73,22 @@ Space Grotesk for titles and hooks. Inter for everything else. Captions are Inte
 
 - Do show the phone screen with a real-looking entry.
 - Do end every video on the logo wordmark and "Driftnote. Say it out loud."
+- Do talk to one person as "you".
+- Do name the real numbers plainly: up to 60 seconds, 7 free entries a week.
+- Do use one of our phrases at least once in a script.
 - Don't show faces in the faceless short.
 - Don't use stock "person journaling in a cafe" shots.
 - Don't promise outcomes like better sleep or less anxiety.
+- Don't use guilt, streaks or urgency to push a download.
+- Don't state a price, date or user count that is not in the facts above.
+
+## Banned words
+
+- "revolutionary"
+- "game changer"
+- "unlock"
+- "supercharge"
+- "10x"
+- "AI-powered" as a headline
+
+Also banned: any health or therapy claim, and any number we do not have.

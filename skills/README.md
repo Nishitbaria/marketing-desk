@@ -4,6 +4,7 @@ Each agent reads its own folder. `formats/` holds the video types Brief plans wi
 
 | Folder | Agent | Skills |
 |---|---|---|
+| `quill/` | Quill, script writer | hooks, script-writer, formats. The only folder the current template uses; see `quill/SOURCES.md` |
 | `brief/` | Brief, producer | script-writer, youtube-hook-plot, trend-picker, product-analyzer, content-analyzer |
 | `reel/` | Reel, talent | ugc-flow, ugc-product-flow, ugc-saas-flow, ugc-tutorial-flow, ugc-unboxing-flow, ad-copy, ai-influencer-flow |
 | `cut/` | Cut, editor | montage, edit, video-repurpose, thumbnail-generation, audio-generation |
