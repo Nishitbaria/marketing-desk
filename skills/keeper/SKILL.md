@@ -55,8 +55,9 @@ Verdict is one word. On PASS, write `Issues: None`.
 
 Next is exactly one of:
 
-- PASS on a script: `@studio-cut render it`
-- PASS on a render: `@<creator> ready for your approval`
+- PASS on a script with no `[need: ...]`: `@studio-cut render it`
+- PASS on a script with a `[need: ...]`: `@studio-director needs the creator's input`
+- PASS on a render: `@studio-director approved render`
 - FIX on a script: `@studio-quill please revise`
 - FIX on a render: `@studio-cut please re-render`
 
@@ -65,6 +66,6 @@ Rules:
 - At most 5 issues, most important first.
 - Every issue has a concrete fix. Give the replacement text or value. "Make it pop" is not a fix.
 - Fix the line. Never rewrite the whole script, that is Quill's job.
-- After 3 FIX verdicts on the same piece, set Next to `@<creator> needs your call` and stop.
+- After 3 FIX verdicts on the same piece, set Next to `@studio-director needs the creator's call` and stop.
 - PASS is not the creator's approval. Never say a piece is approved.
 - No em dashes.

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Room and Test Plan</title>
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--ink:#1d1c1a;--muted:#6b6862;--line:#e4e1da;--ok:#1a7f4b;--okbg:#e5f4ec;--warn:#9a6200;--warnbg:#fbf0d9;--no:#b3321f;--nobg:#fbe6e2;--accent:#2f4fb5}
+@media (prefers-color-scheme:dark){:root{--bg:#161513;--card:#1f1e1b;--ink:#efece6;--muted:#a29e96;--line:#34322d;--ok:#5fd29a;--okbg:#17352a;--warn:#e9b95c;--warnbg:#3a2d12;--no:#f08a78;--nobg:#42201a;--accent:#9db1f5}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:860px;margin:0 auto;padding:40px 16px 80px}
+h1{font-size:32px;line-height:1.15;letter-spacing:-.02em;margin:0 0 8px;text-wrap:balance}
+h2{font-size:21px;letter-spacing:-.01em;margin:44px 0 12px;text-wrap:balance}
+p{margin:0 0 12px}
+.sub{color:var(--muted)}
+code{font:13.5px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--line);padding:1px 5px;border-radius:4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.grid .card{margin:0}
+.grid b{display:block;margin-bottom:2px}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;padding:1px 8px;border-radius:99px;white-space:nowrap}
+.ok{color:var(--ok);background:var(--okbg)}.warn{color:var(--warn);background:var(--warnbg)}.no{color:var(--no);background:var(--nobg)}
+.flow{list-style:none;margin:0;padding:0}
+.flow li{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.flow li:last-child{border:0}
+.flow b{color:var(--accent)}
+.flow .stop{color:var(--no)}
+.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{text-align:left;color:var(--muted);font-weight:500}
+th,td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+label.t{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
+label.t:last-child{border:0}
+label.t input{width:18px;height:18px;margin:3px 0 0}
+label.t small{display:block;color:var(--muted);font-size:14px}
+#count{font-variant-numeric:tabular-nums}
+pre{background:var(--line);border-radius:8px;padding:12px;overflow-x:auto;font:13px/1.5 ui-monospace,Menlo,monospace;margin:8px 0 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Room design aur testing plan</h1>
+<p class="sub">Ek jagah: room kaise chalta hai, kya proven hai, aur tumhe kya test karna hai.</p>
+
+<h2>Abhi status</h2>
+<div class="grid">
+  <div class="card"><b>7 bugs</b><span class="tag ok">Files me fixed</span><p class="sub" style="margin:8px 0 0">Lint aur validator pass. Commit nahi hua.</p></div>
+  <div class="card"><b>Export</b><span class="tag ok">MP4</span><p class="sub" style="margin:8px 0 0">Cut sirf MP4 banata hai, <code>renders/&lt;slug&gt;/</code> me.</p></div>
+  <div class="card"><b>Real room run</b><span class="tag no">Abhi nahi hua</span><p class="sub" style="margin:8px 0 0">Yeh Console me tumhe chalana hai. Main token nahi chhu sakta.</p></div>
+  <div class="card"><b>Chat app</b><span class="tag warn">Jayesh pe</span><p class="sub" style="margin:8px 0 0">Plan <code>docs/jayesh-chat-plan.md</code> me hai.</p></div>
+</div>
+
+<h2>Room design</h2>
+<div class="card wrap">
+<table>
+<tr><th>Kaun</th><th>Kaam</th><th>Kaun use jagata hai</th></tr>
+<tr><td><b>Creator</b> (tum)</td><td>Ask deta hai, missing fact deta hai, approve karta hai</td><td>Director tag karta hai</td></tr>
+<tr><td><code>studio-director</code></td><td>Brief, status, creator se baat</td><td>Creator, aur har handoff ka cc</td></tr>
+<tr><td><code>studio-quill</code></td><td>Script</td><td>Director, Keeper ka FIX</td></tr>
+<tr><td><code>studio-keeper</code></td><td>PASS ya FIX</td><td>Quill aur Cut</td></tr>
+<tr><td><code>studio-cut</code></td><td>MP4 render</td><td>Keeper ka PASS ya FIX</td></tr>
+</table>
+</div>
+<div class="card">
+<ol class="flow">
+<li><b>Creator</b><span>Likhta hai: <code>@studio-director Driftnote Plus ka 30s launch video, price bhi bolo</code></span></li>
+<li><b>Director</b><span>Brief post karta hai aur <code>@studio-quill write this</code></span></li>
+<li><b>Quill</b><span>Script likhta hai. Price nahi pata, to <code>[need: price]</code> rakhta hai.</span></li>
+<li><b>Keeper</b><span>Script check. <code>[need:</code> mila, to Cut nahi, Director ke paas.</span></li>
+<li><b class="stop">Rukna</b><span>Director tumhe tag karke need puchhta hai. Team guess nahi karti. Yeh demo ka hook hai.</span></li>
+<li><b>Creator</b><span><code>@studio-director price is ...</code></span></li>
+<li><b>Quill, Keeper</b><span>Revise, phir PASS, phir <code>@studio-cut render it</code></span></li>
+<li><b>Cut</b><span>MP4 render, ffprobe, phir <code>@studio-keeper check render</code></span></li>
+<li><b>Keeper</b><span>Length, frames, text check. PASS pe <code>@studio-director approved render</code></span></li>
+<li><b class="stop">Rukna</b><span>Director MP4 path deta hai: <code>reply @studio-director approve or your change</code></span></li>
+<li><b>Creator</b><span><code>@studio-director approve</code>. Director: <code>Creator approved. Closed. Nothing published.</code></span></li>
+</ol>
+</div>
+<div class="card">
+<p><b>Room ke 3 rules</b></p>
+<p style="margin:0">Mention tabhi jab asli handoff ho, kyunki mention agent ko jagata hai. Creator har reply me <code>@studio-director</code> likhe, warna agents ke baad wala message Director tak nahi pahunchega. Publish koi agent nahi karta.</p>
+</div>
+
+<h2>Maine jo khud test kiya</h2>
+<div class="card wrap">
+<table>
+<tr><th>Test</th><th>Result</th><th>Kaise</th></tr>
+<tr><td>Template lint</td><td><span class="tag ok">Pass</span></td><td>Switch ka real <code>lint_template</code></td></tr>
+<tr><td>Template plan, bridge khali aur Slack</td><td><span class="tag ok">Pass</span></td><td>Switch ka real <code>plan_template</code>, fake machine ke saath</td></tr>
+<tr><td>Directory ke bina import</td><td><span class="tag ok">Refuse hua, sahi</span></td><td>Same planner</td></tr>
+<tr><td>13 routing messages, sahi agent jaage</td><td><span class="tag ok">13 of 13</span></td><td>Switch ka real mention regex</td></tr>
+<tr><td>Director apne hi mention se khud jaage?</td><td><span class="tag ok">Nahi jaagta</span></td><td>Source <code>delivery/router.py:1030</code> sender ko skip karta hai</td></tr>
+<tr id="dry"><td>Poori chain offline, real render ke saath</td><td><span class="tag ok">Pass, 0 FIX loops</span></td><td>Ek agent ne saare roles khele, repo ki copy me. MP4 30.0s, 1080x1920, h264, 2.07 MB, render 15.7s. <code>[need: price]</code> pe Cut ruka.</td></tr>
+</table>
+</div>
+<p class="sub">Yeh room ka proof nahi hai. Yeh sirf batata hai ki text aur routing sahi hain. Live delivery aur chat app sirf real run se prove honge.</p>
+
+<h2>Dry run me mili kamiyan</h2>
+<div class="card wrap">
+<table>
+<tr><th>Kya</th><th>Asar</th><th>Fix</th></tr>
+<tr><td>CTA link: <code>skills/quill/script-writer.md:36</code> placeholder bolta hai, aur <code>formats.md</code> Launch section chhodne ko</td><td><span class="tag warn">Creator se do baar poochh sakta hai</span></td><td>Ek rule: link missing ho to sirf Open questions me</td></tr>
+<tr><td>Snapshot times beat ke do cards me se ek miss karte hain</td><td><span class="tag warn">Price card bina dekhe nikal sakta hai</span></td><td>Cut har card ka ek time chune</td></tr>
+<tr><td>9:16 aur fonts ka note <code>hyperframes.md</code> me nahi</td><td><span class="tag warn">Cut ko guess karna pada</span></td><td>Chhota vertical video note</td></tr>
+<tr><td>Keeper ka price rule aur room ke facts ka rule takrate hain</td><td><span class="tag warn">Galat FIX ka risk</span></td><td>Likho ki creator ka diya price allowed hai</td></tr>
+<tr><td>Lamba price line ke beech toot-ta hai</td><td><span class="tag ok">Cosmetic</span></td><td>Real price chhota hoga, abhi chhodo</td></tr>
+</table>
+</div>
+<p class="sub">Test nahi hua: asli Switch routing, <code>read_context</code>, teesra FIX, aur FIX ke baad re-render.</p>
+
+<h2>Tumhare tests <span class="sub" id="count"></span></h2>
+<div class="card">
+<p><b>Pehle</b>: main commit karunga jab bologe, phir Console me purane <code>studio-*</code> agents delete karo aur purana room archive karo. Phir import karo, <code>directory</code> me repo ka path do.</p>
+<div id="tests">
+<label class="t"><input type="checkbox"><span>Kickoff<small>Charon agents ek line ka intro dein. Na aaye to agent status aur auth dekho.</small></span></label>
+<label class="t"><input type="checkbox"><span>Ask bhejo<small>Upar wala Driftnote message. Director ka brief aaye, Quill jaage.</small></span></label>
+<label class="t"><input type="checkbox"><span>Need stop<small>Script me <code>[need: price]</code>. Cut bilkul na chale. Director tumhe tag kare.</small></span></label>
+<label class="t"><input type="checkbox"><span>Answer do<small><code>@studio-director price is TEST</code>. Answer Quill tak jaye, script revise ho.</small></span></label>
+<label class="t"><input type="checkbox"><span>Render<small>Cut MP4 path, length aur aspect post kare. <code>ffprobe</code> se khud confirm karo.</small></span></label>
+<label class="t"><input type="checkbox"><span>Render check<small>Keeper real measurement kare, PASS ya FIX de.</small></span></label>
+<label class="t"><input type="checkbox"><span>Approve<small><code>@studio-director approve</code>. Director closing line likhe aur ruk jaye.</small></span></label>
+<label class="t"><input type="checkbox"><span>Change request<small>Naya run: <code>@studio-director hook badlo</code>. Quill se chain dobara chale.</small></span></label>
+<label class="t"><input type="checkbox"><span>Double wake<small>Har handoff pe har agent ek hi baar bole. Do baar bole to mujhe batao.</small></span></label>
+</div>
+</div>
+
+<h2>Fail ho to</h2>
+<div class="card wrap">
+<table>
+<tr><th>Dikha</th><th>Matlab</th><th>Karo</th></tr>
+<tr><td>Name already in use</td><td>Purane agents baaki hain</td><td>Delete karke reimport</td></tr>
+<tr><td>"this chat account isn't linked"</td><td>Chat account Switch user se linked nahi</td><td>Console me account link karo</td></tr>
+<tr><td>Claude signed out dikhe</td><td><code>verbose: true</code> laga hai</td><td><code>~/.claude/settings.json</code> me false karo</td></tr>
+<tr><td>Agent reply nahi karta</td><td>Tag ke bina message gaya</td><td><code>@agent-name</code> ke saath bhejo</td></tr>
+<tr><td>Cut approval maangta hai</td><td><code>auto_approve: false</code> ka asar</td><td>Console me approve karo, aur mujhe batao kitni baar hua</td></tr>
+</table>
+</div>
+
+<h2>Chain ke baad bhejna</h2>
+<div class="card"><p style="margin:0">Room ka transcript copy karke mujhe do. Main use <code>demo/run-A1.md</code> me daalunga.</p></div>
+</main>
+<script>
+var boxes=[].slice.call(document.querySelectorAll('#tests input')),c=document.getElementById('count'),s=[];
+try{s=JSON.parse(localStorage.getItem('room-tests')||'[]')}catch(e){}
+function up(){var n=boxes.filter(function(b){return b.checked}).length;c.textContent=n+' of '+boxes.length;
+try{localStorage.setItem('room-tests',JSON.stringify(boxes.map(function(b){return b.checked})))}catch(e){}}
+boxes.forEach(function(b,i){b.checked=!!s[i];b.addEventListener('change',up)});up();
+</script>
+</body>
+</html>
