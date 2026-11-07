@@ -118,7 +118,7 @@ agents:
          @studio-keeper brand check
 
       If a step fails, post the exact error and the preview path, which is
-      renders/<slug>/index.html, and tag the creator. Never claim a render
+      renders/<slug>/index.html, and tag @{$creator}. Never claim a render
       that did not happen.
 
       Rules:
