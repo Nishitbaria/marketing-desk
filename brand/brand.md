@@ -1,38 +1,54 @@
 # Brand
 
-Written with `skills/keeper/brand-intake.md` from `brand/brand-kit.md`. DEMO data: Driftnote and its creator are fictional.
+Written from https://linkio.site and checked by the creator.
 
 ## Name and what we do
-Driftnote, a voice journal app for iOS. You talk for one minute before bed, it writes the entry and finds the pattern in your week.
+LinkIo. Bio pages, short links and click analytics in one place.
 
 ## Audience
-People who want to journal but never stick with writing. 22 to 35, phone first, tired of productivity guilt.
+Creators. "Perfect for creators who want to organize their online presence."
 
 ## What we promote (with the real link)
-Driftnote, free with 7 entries a week. Driftnote Plus removes the limit. Link: ASK ME. Price: ASK ME. Launch date: ASK ME.
+LinkIo, start for free. Link: https://linkio.site/signup
+Price: Free $0 forever. Pro $8 per month or $72 a year. Free during early access.
 
 ## The feeling
-Calm and warm. Talk to one person, at night, at a low volume. Honest, a little funny.
+Warm, personal, about your audience.
 
 ## Voice
 - Say "you".
-- Use: "say it out loud", "your week, written down", "no streaks, no guilt".
-- End every video on: "Driftnote. Say it out loud."
-- Never: "revolutionary", "game changer", "unlock", "supercharge", "10x", "AI-powered" as a headline.
+- Use: "where attention turns into action", "a page worth visiting", "looks like you".
+- End every video on: "Your audience is clicking. Start counting."
+- Words to avoid: ASK ME.
 
 ## Assets
-- Colours: Night navy `#1B1F3B`, Paper `#F4EFE6`, Ember `#FF6B4A`, Mist `#8A8FA8`, all typed in the brand kit.
-- Fonts: Space Grotesk 700 for titles and hooks. Inter for everything else.
-- Logo: the wordmark closes every video. Logo files and clear space: ASK ME.
+- Colours: Background `#FFFFFF`, Text `#0A0A0A`, Accent `#000000`, Secondary: ASK ME.
+- Fonts: Geist for titles and body.
+- Logo: https://linkio.site/brand/wordmark-light.png
+- Logo files: ASK ME.
 
 ## Allowed facts
-- Speak for up to 60 seconds, get a written entry.
-- Weekly recap: the three moods and topics that came up most.
-- Entries stay on the phone. No account needed.
-- Free with 7 entries a week. Driftnote Plus removes the limit.
+- One link. Every click counted.
+- A bio page that looks like you, short links you can post anywhere, and analytics that show where every click came from.
+- Pick a theme, tune the details, and publish in minutes.
+- Classic list or a Hero layout with a big cover.
+- Every link gets a short linkio.site/l/ URL that tracks clicks wherever you post it
+- Download a QR code for any link and take it offline.
+- Protect a link or let it expire on a date you choose.
+- Country, device, browser, referrer and UTM campaign.
+- Top links and week-over-week change, in your inbox.
+- No hidden fees. Cancel anytime.
+- Unlimited links and short URLs
+- Your public bio page with 5 themes
+- 30 days of click analytics
+- Analytics beyond 30 days, custom ranges and CSV export
+- No LinkIo branding, plus a Pro badge
+- Or $72 a year. 7-day free trial.
+- custom domains are planned for a future paid plan
+- Set up your page in a couple of minutes.
+- Free during early access, no credit card required.
 
 ## Never
-- Promise outcomes such as better sleep or less anxiety, or make any health or therapy claim.
-- Use guilt, streaks or urgency to push a download.
+- Promise outcomes the site does not promise.
+- Use guilt or false urgency.
 - State a price, date, user count or other number that is not listed above.
-- Use stock "person journaling in a cafe" shots, or show faces in a faceless short.

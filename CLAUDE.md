@@ -22,7 +22,7 @@ Flow: creator asks Director in the main room, Director opens a video room from `
 - `brand/brand-kit.md` is demo data for the fictional Driftnote. `brand/brand.md` and `brand/MOTION.md` come from it. Read them before any visual or script work.
 - Template files take only fields documented in Switch's `docs/TEMPLATES.md`. Do not invent fields.
 - Keep `auto_approve: false` on every agent. A template has no include, so all agents live in one file.
-- Remotion is the only render engine, with remocn components. Pins are `create-video@4.0.541` and `shadcn@4.23.0`. New renders never use HyperFrames. Do not run `npx skills add`, the remocn skill is vendored in `skills/cut/remocn/`.
+- Remotion is the only render engine, with remocn components. Pins are `create-video@4.0.541`, `@remotion/sfx@4.0.541`, `@remotion/transitions@4.0.541` and `shadcn@4.23.0`. New renders never use HyperFrames. Do not run `npx skills add`, the remocn skill is vendored in `skills/cut/remocn/`.
 - Commit no secrets, no `.hyperframes/`, no `out/`, and no MP4 except the one Notely demo.
 - Do not read `~/Library/Application Support/switchdash/control-api.json` or any `credentials.json`.
 - No em dashes in any file, script or reply.

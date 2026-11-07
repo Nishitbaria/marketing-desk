@@ -32,7 +32,7 @@ Use the script's Format line for the expected values. Measure, do not assume.
 Run both commands from `renders/<slug>/`, against the MP4 file, not the source. Make one temp folder outside the repository for the frames.
 
 ```bash
-npx remotion ffprobe -v error -show_entries stream=width,height -show_entries format=duration -of default=nw=1 <slug>.mp4
+npx remotion ffprobe -v error -show_entries stream=codec_name,width,height -show_entries format=duration -of default=nw=1 <slug>.mp4
 npx remotion ffmpeg -y -ss <seconds> -i <slug>.mp4 -frames:v 1 -update 1 <temp folder>/<seconds>.jpg
 ```
 
@@ -44,6 +44,7 @@ npx remotion ffmpeg -y -ss <seconds> -i <slug>.mp4 -frames:v 1 -update 1 <temp f
 6. Text holds at least 1.5s and the CTA at least 3s. Sample extra frames to measure this.
 7. No move breaks the Never list.
 8. No two beats share a layout.
+9. `ffprobe` lists `codec_name=aac`, so the video has sound. Beats change by a transition, not a hard cut. Sample frames across a beat change to measure this. Keeper cannot hear the video, so do not judge how it sounds.
 
 If a measurement cannot run, the verdict is FIX and the issue names the command and its error.
 

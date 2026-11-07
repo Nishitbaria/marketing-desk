@@ -16,6 +16,8 @@ node ../../skills/cut/remocn/setup.mjs .
 mkdir -p out public
 curl -s https://remocn.dev/llms-components.txt -o out/components.txt
 npx --yes shadcn@4.23.0 add --yes --overwrite @remocn/<name> @remocn/<name>
+npm i --save-exact @remotion/sfx@4.0.541 @remotion/transitions@4.0.541
+cp ../../skills/cut/audio/lofi-76bpm.mp3 public/
 npx tsc --noEmit
 npx remotion still video out/f<frame>.png --frame=<frame> --gl=angle --scale=0.5
 npx remotion render video <slug>.mp4 --gl=angle
@@ -61,13 +63,45 @@ Component defaults are remocn's own demo copy, and they show up in your video if
 - Replace the hard-coded remocn logo in the copied file with the product name from the script.
 - Components load their own fonts. To use the brand font, change the `loadFont` import in the copied file.
 
-## Audio
+## Transitions
 
-A voiceover or music file goes in `public/` and plays with `<Audio src={staticFile("<file>")} />`. Cut does not generate audio.
+Every beat change gets a transition, never a hard cut. Use `TransitionSeries` with `fade()` from `@remotion/transitions/fade` and `linearTiming({ durationInFrames: 15 })`. Each transition overlaps two beats, so the total is the sum of the beats minus 15 frames per transition. Set `durationInFrames` to that total.
+
+## Sound
+
+Every video has background music and small interaction sounds. Add them after the picture works. Every source below is free to use with no credit needed, so use nothing else and download nothing else.
+
+| Moment | Sound | Volume |
+| --- | --- | --- |
+| Each transition, starting on the first frame of the fade | `whoosh` | 0.3 |
+| A click or tap in a product screen | `mouseClick` | 0.5 |
+| A toggle, or a card or stat landing | `uiSwitch` | 0.4 |
+| A new page or section in a product screen | `pageTurn` | 0.4 |
+
+Import them from `@remotion/sfx`. Keep sounds small: at most one per second, and none on text that simply fades in. The other sounds in that package are memes or have an unclear license, so never use them.
+
+```tsx
+import { AbsoluteFill, Audio, Sequence, interpolate, staticFile } from "remotion";
+import { whoosh } from "@remotion/sfx";
+
+const Sfx = ({ src, at, volume }: { src: string; at: number; volume: number }) => (
+  <Sequence from={at} layout="none"><Audio src={src} volume={volume} /></Sequence>
+);
+
+const music = (f: number) =>
+  interpolate(f, [0, 30, TOTAL - 45, TOTAL], [0, 0.6, 0.6, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+
+// Beside the TransitionSeries, inside one AbsoluteFill:
+<Audio src={staticFile("lofi-76bpm.mp3")} loop volume={music} />
+<Sfx src={whoosh} at={firstFrameOfFade} volume={0.3} />
+```
+
+`lofi-76bpm.mp3` is the studio's own 50s loop. A voiceover file goes in `public/` and plays with another `<Audio>`. With a voiceover, drop the music from 0.6 to 0.2 so it ducks. Cut does not generate voiceovers.
 
 ## Rules
 
 - Deterministic only. No `Math.random()`, `Date.now()` or timers. Use `useCurrentFrame()`.
 - Any component with a `ground` prop needs `--gl=angle`, or the ground renders black.
+- A still has no sound. After the render, confirm `codec_name=aac` in the `ffprobe` output.
 - Look at one still per beat before you render. `tsc` passing does not show how a frame looks. Compare every visible word with the script.
 - No hosted rendering, no Remocn Studio upload, no `remotion lambda`.

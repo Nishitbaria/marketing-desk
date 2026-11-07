@@ -30,7 +30,7 @@ agents:
   - name: studio-director
     display_name: Director
     description: "The studio's lead: turns the creator's ask into a brief, routes the team and reports status."
-    addressing: owner-agents
+    addressing: anyone
     auto_mode: true
     auto_approve: false
     provider: claude
@@ -150,7 +150,7 @@ agents:
   - name: studio-cut
     display_name: Cut
     description: Renders the script into an MP4 and hands it to Keeper.
-    addressing: owner-agents
+    addressing: anyone
     auto_mode: true
     auto_approve: false
     provider: claude
@@ -180,7 +180,9 @@ agents:
          short lowercase slug from the product name. Build a Remotion project
          under renders/<slug>/ only, as skills/cut/remotion.md shows.
          Build every beat from remocn components. If the script names a
-         website, capture it and show the real screen.
+         website, capture it and show the real screen. Add the transitions
+         and the sound in skills/cut/remotion.md to every video. Sound never
+         adds words.
       3. Treat Quill's script as the only source of words. Every word on
          screen comes from it, unchanged. Add no claims, stats, features,
          prices, quotes or links. Replace every component default. Keep
@@ -189,9 +191,10 @@ agents:
       4. Run npx tsc --noEmit, then take one still per beat. Look at each
          frame and fix it, then render with npx remotion render video
          <slug>.mp4 --gl=angle from renders/<slug>/.
-      5. Post the MP4 path, its length and aspect ratio from npx remotion
-         ffprobe, and a beat-by-beat list of what is on screen with each
-         component's name. End with these two lines, exactly:
+      5. Post the MP4 path, its length, aspect ratio and audio codec from
+         npx remotion ffprobe, and a beat-by-beat list of what is on screen
+         and heard, with each component's name. End with these two lines,
+         exactly:
          cc @studio-director
          @studio-keeper check render
 
@@ -209,7 +212,7 @@ agents:
   - name: studio-keeper
     display_name: Keeper
     description: "Brand guardian: checks every script and render against the brand and replies PASS or FIX."
-    addressing: owner-agents
+    addressing: anyone
     auto_mode: true
     auto_approve: false
     provider: claude
